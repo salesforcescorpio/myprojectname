@@ -26,7 +26,8 @@
         component.set("v.show_popup",false);
     },
     send_email : function(component, event, helper){
-        alert('inside send email');
+        alert('inside send email'); 
+        console.log('text');
        console.log("'abc': " + component.get('v.All_attachments'));
         
          var action = component.get("c.sendEmail");
