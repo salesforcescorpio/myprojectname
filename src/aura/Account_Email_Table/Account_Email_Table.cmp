@@ -1,0 +1,74 @@
+<aura:component >
+    <aura:attribute name="Accounts" type="Account[]"/>
+    <aura:attribute name="DisplayCheckbox" type="boolean" default="true"/>
+        <aura:attribute name="selected_records" type="list"/>
+   
+ <div style="margin:2%">   
+    <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+  <thead>
+    <tr class="slds-text-title_caps">
+        <aura:if isTrue="{!v.DisplayCheckbox}">
+             <th scope="col">
+        <div class="slds-truncate" title="Select">Select</div>
+      </th>
+        </aura:if>
+      <th scope="col">
+        <div class="slds-truncate" title="Account Name">Account Name</div>
+      </th>
+        <aura:if isTrue="{!v.DisplayCheckbox}">
+        
+      <th scope="col">
+        <div class="slds-truncate" title="Account Type">Account Type</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Account Plan Type">Account Plan Type</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Account Class">Account Class</div>
+      </th>
+      </aura:if>        
+      <th scope="col">
+        <div class="slds-truncate" title="Account Personal Email">Account Personal Email</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Account Official Email">Account Official Email</div>
+      </th>
+    
+    </tr>
+  </thead>
+  <tbody>
+    <aura:iteration items="{!v.Accounts}" var="Acc" indexVar="index">
+    <tr>
+           <aura:if isTrue="{!v.DisplayCheckbox}">
+                <th scope="row" data-label="Selected">
+                               	<input type="checkbox" data-selected-Index="{!index}" onclick="{!c.accSelected}"  data-selected-id="{!Acc.id}" checked="{!Acc.selectable}" />
+
+               </th>
+        </aura:if>
+      <th scope="row" data-label="Account Name">
+        <div class="slds-truncate" title="Account Name"><a href="javascript:void(0);">{!Acc.Name}</a></div>
+      </th>
+         <aura:if isTrue="{!v.DisplayCheckbox}">
+       
+      <td data-label="Account Type">
+        <div class="slds-truncate" title="Account Type">{!Acc.Type__c}</div>
+      </td>
+      <td data-label="Account Plan Type">
+        <div class="slds-truncate" title="Account Plan Type">{!Acc.Account_Plan_Type__c}</div>
+      </td>
+      <td data-label="Account Class">
+        <div class="slds-truncate" title="Account Class">{!Acc.Class__c}</div>
+      </td>
+        </aura:if>
+      <td data-label="Account Personal Email">
+        <div class="slds-truncate" title="Account Personal Email">{!Acc.Account_Personal_Email__c}</div>
+      </td>
+      <td data-label="Account Official Email">
+        <div class="slds-truncate" title="Account Official Email">Account Official Email</div>
+      </td>
+    </tr>
+    </aura:iteration>
+  </tbody>
+</table>
+   </div>
+</aura:component>

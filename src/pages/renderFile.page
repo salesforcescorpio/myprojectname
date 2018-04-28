@@ -1,0 +1,18 @@
+<apex:page controller="renderFile">
+    <apex:form id="form">
+        <apex:pageBlock >
+            <apex:pageBlockButtons location="bottom">
+                <apex:actionRegion id="area51" renderRegionOnly="false">
+                    <apex:commandButton value="Something" reRender="form" action="{!reRender}"/>
+                </apex:actionRegion>
+                <apex:commandButton value="Save" action="{!save}"/>
+            </apex:pageBlockButtons>
+            <apex:pageBlockSection >
+                <apex:repeat value="{!items}" var="value">
+                    <apex:outputText >{!value}</apex:outputText>
+                </apex:repeat>
+                <apex:inputFile contentType="{!contentType}" fileName="{!fileName}" value="{!fileBody}" />
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

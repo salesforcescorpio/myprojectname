@@ -1,0 +1,18 @@
+{
+    "autoRefresh": false,
+    "browser": "Google Chrome Canary",
+    "pollTimeout": 1200,
+    "debugOnly": true,
+    "debugFilter": "USER_DEBUG|FATAL_ERROR",
+    "apiVersion": "38.0",
+    "deployOptions": {
+        "checkOnly": false,
+        "testLevel": "runLocalTests",
+        "verbose": false,
+        "ignoreWarnings": true
+    },
+    "username": "info.arlingtonhall@gmail.com.developer2",
+    "password": "20170620AH3i81ME0TTdhsTpoD0ZPzh5iQN",
+    "url": "https://test.salesforce.com",
+    "autoCompile": true
+}

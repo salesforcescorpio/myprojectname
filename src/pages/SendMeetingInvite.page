@@ -1,0 +1,77 @@
+<apex:page standardController="Lead" extensions="SendMeetingInvite">
+    <apex:sectionHeader title="Send Meeting Invite To" subtitle="{!Lead.Name}"/>
+    <apex:form >
+   <apex:pageMessages id="pg_msgs"/>
+    <apex:image url="{!$Resource.InformationIcon}" width="15" height="15"/>
+    <apex:outputLabel value="Please choose email Type first" style="font-weight:80;color:#0099ff"/>
+    <apex:pageBlock >
+    <apex:pageBlockButtons >
+        <apex:commandButton value="Send Meeting Invite" action="{!sendInvite}" rerender="pg_msgs" />
+        <apex:commandButton action="{!dosubmit}" value="Back"  /> 
+    </apex:pageBlockButtons>
+        <apex:pageBlockSection columns="2" id="pb">
+                
+                <!-- <apex:pageBlockSectionItem >
+                    <apex:outputText value="Email "/>
+                    <apex:inputText value="{!sendTo}"/>
+                </apex:pageBlockSectionItem> -->
+                 <apex:pageBlockSectionItem >
+                        <apex:outputText value="Location"/>
+                        <apex:inputText value="{!Location}"/>
+                    </apex:pageBlockSectionItem> 
+                
+                 <apex:pageBlockSectionItem >
+                    <apex:outputText value="Start Date Time "/>
+                    
+                    <apex:inputField value="{!objEvent.startDateTime}" />
+                   <!-- <apex:inputText value="{!objEvent.startDateTime}" size="10" id="demo" onfocus="DatePicker.pickDate(true, this , true);" />   -->
+                </apex:pageBlockSectionItem>
+                
+                
+             
+                 
+                 <apex:pageBlockSectionItem >
+                        <apex:outputText value="Description"/>
+                        <apex:inputText value="{!Description}" style="width: 300px; height: 100px" maxlength="1200"/>
+                 </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputText value="End Date Time "/>
+                    <apex:inputField value="{!objEvent.EndDateTime}" />
+                </apex:pageBlockSectionItem>
+                
+         <!-- <apex:pageBlockSectionItem >
+                        <apex:outputText value="Subject"/>
+                        <apex:inputText value="{!Subject}"/>
+                    </apex:pageBlockSectionItem> -->
+                    
+          <apex:pageBlockSectionItem >
+           <apex:actionRegion id="area51" renderRegionOnly="true">
+              <apex:selectList size="1" value="{!meetingObj.Email_Type__c}" > 
+                 <apex:actionSupport event="onchange" action="{!showEmail}"  rerender="email_section" />
+                 <apex:outputLabel value="Email Type" for="file" style="margin-left:5cm;"/> &nbsp;<apex:selectOptions value="{!items}"></apex:selectOptions> 
+             </apex:selectList><br/>
+             <apex:outputPanel id="email_section">
+             <div id="email_section_div" style="    margin-top: 2%;    margin-left: 25%;    width: 50%;">
+             <apex:outputpanel rendered="{!renderwork}" >Selected Email :<apex:outputLabel value="{!lead.Official_Email__c}" for="workEmail" /></apex:outputpanel>
+              <apex:outputpanel rendered="{!renderPeronsal}">Selected Email :<apex:outputLabel value="{!lead.Email}" for="PersonalEmail" /></apex:outputpanel>
+                  </div>
+              </apex:outputPanel>
+           </apex:actionRegion>
+        </apex:pageBlockSectionItem>
+               
+               <apex:pageBlockSectionItem id="email_section" >
+              <apex:outputpanel rendered="{!renderwork}" >Selected Email <apex:outputLabel value="{!lead.Official_Email__c}" for="workEmail" /></apex:outputpanel>
+              <apex:outputpanel rendered="{!renderPeronsal}">Selected Email<apex:outputLabel value="{!lead.Email}" for="PersonalEmail" /></apex:outputpanel>
+       </apex:pageBlockSectionItem>
+               <!-- <apex:pageBlockSectionItem >
+                     <apex:outputText value="Subject "/>
+                     <apex:inputField value="{!objEvent.Subject}"/> 
+                    
+                </apex:pageBlockSectionItem>-->
+             
+                 </apex:pageBlockSection>      
+            
+                
+                </apex:pageBlock>
+    </apex:form>
+</apex:page>

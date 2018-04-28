@@ -1,0 +1,98 @@
+<aura:component controller="AccountFieldSchema">
+     <aura:attribute name="Subject" type="String"/>
+     <aura:attribute name="email_body" type="String"/>
+    <aura:attribute name="show_popup" type="Boolean"/>	 
+      <aura:attribute name="tab_A" type="Boolean" default="true"/>	 
+     <aura:attribute name="tab_B" type="Boolean" default="false"/>	 
+    <aura:attribute name="AllAccounts" type="Account[]"/>
+      <aura:attribute name="Sel_accounts" type="String[]"/>
+    <aura:attribute name="TypeOfEmail" type="String[]"/>
+    <aura:handler name="init" value="this" action="{!c.doinit}"/>
+    <aura:attribute name="Success_msg" type="boolean" default="false"/>
+      <aura:attribute name="tab_selected" type="String" default="TabA"/>
+    <aura:attribute name="All_attachments" type="object[]"/>
+      <aura:attribute type="String" name="fileString"/>
+     <aura:attribute type="String" name="fileName"/>
+  <aura:attribute name="Max_attachmentsAdded" type="boolean" default="false"/>    
+      <aura:attribute name="show_spinner" type="boolean" default="false"/>
+   <aura:if isTrue="{!v.show_spinner}">
+        <lightning:spinner variant="brand" size="large"/>
+        </aura:if>   
+    <div class="demo-only" style="height:auto;">
+        
+  <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container" style="    margin-top: 5%;">
+      <header class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close">
+          <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Send Email</h2>
+      </header>
+      <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+      	
+         <div class="slds-tabs_default">
+           <aura:if isTrue="{!v.Success_msg}">
+             <div style="text-align:center">
+             	 <lightning:icon iconName="action:approval" size="large" alternativeText="Indicates approval"/>     
+                 <br/>
+                 <span>
+                 <p>Emails Sent Successfully..</p>
+                 </span>
+			</div>
+          </aura:if>    
+      <aura:if isTrue="{!!v.Success_msg}">        
+  <ul class="slds-tabs_default__nav" role="tablist">
+    <li class="{!v.tab_A ? 'slds-tabs_default__item slds-is-active' : 'slds-tabs_default__item '}" title="Item One" role="presentation" id="TabA" onclick="{!c.switch_tab}"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="0" aria-selected="true" aria-controls="tab-default-1" id="TabA" onclick="{!c.switch_tab}">Email Content</a></li>
+    <li class="{!v.tab_B ? 'slds-tabs_default__item slds-is-active' : 'slds-tabs_default__item '}" title="Item Two" role="presentation" id="TabB" onclick="{!c.switch_tab}"><a class="slds-tabs_default__link" href="javascript:void(0);" role="tab" tabindex="-1" aria-selected="false" aria-controls="tab-default-2" id="TabB" onclick="{!c.switch_tab}">Selected Accounts</a></li>
+  </ul>
+  <aura:if isTrue="{!v.tab_A}">        
+  <div id="tab-default-1" class="slds-tabs_default__content slds-show" role="tabpanel" aria-labelledby="tab-default-1__item">
+	<!-- Email Content-->
+  	   <ui:inputText label="Subject" value="{!v.Subject}" required="true"/>
+		<ui:inputTextArea aura:id="email_body" label="Body" value="{!v.email_body}" rows="5"/>
+  <aura:if isTrue="{!!v.Max_attachmentsAdded}">
+      <input type="file" class="file slds-file-selector__button slds-button slds-button_neutral email_att" aura:id="file" onchange="{!c.upload_attachment_new}"/>
+    </aura:if> 
+      <aura:if isTrue="{!v.Max_attachmentsAdded}">
+      Maximum No.Of Attachments added please remove to add new attachment
+      </aura:if>
+      <div>
+       <aura:iteration items="{!v.All_attachments}" var="Att" indexVar="index">
+           <span class="slds-pill slds-pill_link">
+  <a href="javascript:void(0);" class="slds-pill__action" title="Full pill label verbiage mirrored here">
+    <span class="slds-pill__label"> {!Att.FileName}</span>
+  </a>
+  <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove" title="Remove" id="{!Att.FileBody}" onclick="{!c.removeAttahment}">
+   X
+  </button>
+</span>
+
+         </aura:iteration>
+      </div>
+  </div>
+  </aura:if>   
+  <aura:if isTrue="{!v.tab_B}">        
+          
+  <div id="tab-default-2" class="slds-tabs_default__content " role="tabpanel" aria-labelledby="tab-default-2__item">
+	<!-- Table List-->
+ <div style="width:75%">
+      <c:Account_Email_Table Accounts="{!v.AllAccounts}" DisplayCheckbox="false"/>
+      </div>   
+  </div>
+ </aura:if>   
+          </aura:if>  
+</div> 
+          
+      </div>
+      <footer class="slds-modal__footer">
+        <button class="slds-button slds-button_neutral" onclick="{!c.close_popup}">Cancel</button>
+          <aura:if isTrue="{!!v.Success_msg}">      
+         	 <button class="slds-button slds-button_brand" onclick="{!c.send_email}">Send</button>
+           </aura:if>   
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</div>
+	
+</aura:component>

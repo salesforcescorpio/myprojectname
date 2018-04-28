@@ -1,0 +1,273 @@
+<apex:page Controller="MassEmailingControllerOnOpportunity">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+<script src="https://code.jquery.com/jquery-1.12.4.js"/>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"/>
+<style>
+.dataTables_filter {
+display: none; 
+}
+</style>
+
+            <script>
+                function checkAll(cb)
+                {
+                    var inputElem = document.getElementsByTagName("input");
+                    for(var i=0; i<inputElem.length; i++)
+                    {
+                        if(inputElem[i].id.indexOf("checkedone")!=-1)
+                        inputElem[i].checked = cb.checked;
+                    }
+                }
+               
+           </script>
+           
+           
+           <style>
+            body .bPageBlock .pbBody .red .pbSubheader{
+                background-color:#c00000;
+            }
+            body .bPageBlock .pbBody .grey .pbSubheader{
+                background-color:#c0c0c0;
+            }
+            body .bPageBlock .pbBody .grey .pbSubheader h3{
+                color:#000;
+                witdh="70%";
+            }
+        </style>
+            <apex:form id="formid">
+          
+            <apex:outputPanel rendered="{!!show_email}">
+          
+<table>
+<tr>
+    <td>
+         <c:multiselectcomponent leftLabel="Type" leftOption="{!AccountTypeValues}"  rightOption="{!AccountTypeValuesSelected }" size="3" width="130px" />
+     </td>
+     <td>
+         <c:multiselectcomponent leftLabel="Account Type" leftOption="{!AccountPlanTypeValues}"  rightOption="{!AccountPlanTypeValuesSelected }" size="3" width="130px" />
+     </td>
+     <td>
+         <c:multiselectcomponent leftLabel="Email type" leftOption="{!EmailType}"  rightOption="{!EmailTypeSelected}" size="3" width="130px" />
+      </td>
+       <td>
+         <c:multiselectcomponent leftLabel="Business type" leftOption="{!BusinessType}"  rightOption="{!BusinessTypeSelected}" size="3" width="130px" />
+      </td>
+      </tr>
+      <tr>
+      <td>
+         <c:multiselectcomponent leftLabel="Selling Business" leftOption="{!SellingBusiness}"  rightOption="{!SellingBusinessSelected}" size="3" width="130px" />
+      </td>
+      <td>
+         <c:multiselectcomponent leftLabel="Stage" leftOption="{!StageName}"  rightOption="{!StageNameSelected}" size="3" width="130px" />
+      </td>
+      
+      <td>
+         <c:multiselectcomponent leftLabel="Lead Source" leftOption="{!LeadSource}"  rightOption="{!LeadSourceSelected}" size="3" width="130px" />
+      </td>
+</tr>
+</table> 
+
+           
+           <apex:commandButton action="{!fetchRecords}" value="Fetch Records"/>
+                   
+                    <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                    
+                    <apex:actionStatus id="actStatusId" startText="Loading...." stopText=""/>
+                    <apex:actionStatus id="processingStatus" startText="Saving...." stopText=""/>
+                  </apex:outputPanel>
+                  
+            </apex:outputPanel>        
+                    <apex:pageBlock rendered="{!!show_email}">
+                    <apex:outputPanel rendered="{!showerror }">
+                    
+                    <h3 style="text-align:left;color:red;">please select atleast one checkbox</h3>
+                    
+                    
+                    </apex:outputPanel>
+                    <apex:pageblock >
+                    <apex:pageBlockButtons rendered="{!IF(OpportnityListRecs.size!= null,True,False)}" location="top">
+                    
+                                        <apex:commandButton action="{!ProcessSelected}" value="Next" /> 
+                     </apex:pageBlockButtons>
+                    
+                    <table id="example" class="display" >
+                    
+                    <thead><tr>
+                    <th> 
+                                <apex:inputCheckbox onclick="checkAll(this)" id="chk">
+                                   
+                                    </apex:inputCheckbox>
+                                
+                                </th>
+                                <th>Opportunity Name</th>
+                                <th>Type</th>
+                                <th>Account Type</th>
+                                <th>Business Type</th>
+                                <th>Selling Business</th>
+                                <th>Stage</th>
+                                <th>Lead Source</th>
+                                <apex:outputText rendered="{!IF(contains(emailTypeis,'Personal_Email__c'),true,false)}"><th>Personal Email</th></apex:outputText>
+                                <apex:outputText rendered="{!IF(contains(emailTypeis,'Work_Email__c'),true,false)}"><th>Work Email</th></apex:outputText>
+                                </tr>
+                    </thead>
+                            <tbody>
+                            
+                            <apex:repeat value="{!OpportnityListRecs}" var="c"    >
+                                <tr>
+                                <td>
+                                 
+                                <apex:inputCheckbox value="{!c.selected}" id="checkedone">
+                                
+                                </apex:inputCheckbox>
+                                </td>
+                            <td>
+                            {!c.opportunity.name }</td>
+                            <td>{!c.opportunity.Type__c}</td>
+                            <td>{!c.opportunity.Account_Type__c}</td>
+                            <td>{!c.opportunity.Business_Type__c}</td>
+                            <td>{!c.opportunity.Selling_Business__c}</td>
+                            <td>{!c.opportunity.StageName}</td>
+                            <td>{!c.opportunity.LeadSource}</td>
+                            <apex:outputText rendered="{!IF(contains(emailTypeis,'Personal_Email__c'),true,false)}"><td>{!c.opportunity.Personal_Email__c}</td>
+                           </apex:outputText>
+                            <apex:outputText rendered="{!IF(contains(emailTypeis,'Work_Email__c'),true,false)}"><td>{!c.opportunity.Work_Email__c}</td>
+                         </apex:outputText>
+                                
+                                
+                                </tr>
+                                </apex:repeat> 
+                    
+                    
+                                </tbody>
+                    
+                    
+                    
+                    
+                    </table>
+                     </apex:pageblock>
+                    </apex:pageBlock>
+   <!---------------------------------------------------------------------------------------------->
+          <apex:outputPanel rendered="{!show_email}" >
+          <apex:actionFunction name="sendmail" action="{!sendEmail}"/>
+                         <apex:pageMessages id="showmsg"></apex:pageMessages>
+                      <apex:pageblock ><apex:pageBlockButtons location="top">
+                      <div class="btn"  value="send Email" onclick="checkEmailsend()">Send Email</div>
+                      <apex:commandButton action="{!GoBack}" value="Back"/>
+                      </apex:pageBlockButtons> </apex:pageblock>
+          <table width="100%" >
+              <tr>
+                 <td style="width:50%;" class="email_panel">
+                  <div class="email_panel" style="margin-left: -250%;">
+                  <apex:pageblock >
+                  <apex:pageBlockSection id="Selected_PBS" columns="1" >
+                        <apex:pageBlockSectionItem >
+                          <apex:outputLabel value="Email Subject" for="fileName"/>
+                          <apex:inputText style="width: 360px; height: 20px"  value="{!EmailSubject}" id="fileName"/>
+                          </apex:pageBlockSectionItem>
+                          <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >
+                          <apex:outputLabel value="Email Body" for="description"/>
+                          <apex:inputTextarea style="width: 360px; height: 200px" value="{!EmailBody}" id="description" />
+                          </apex:pageBlockSectionItem>
+                          <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >
+                          <apex:outputLabel value="File" for="file"/>
+                          <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"  contentType="{!contentType}" id="file"/>
+                         
+                           
+                          </apex:pageBlockSectionItem>
+                         
+                   </apex:pageBlockSection></apex:pageblock></div>
+
+                         
+
+                        
+                  </td>
+                  <td style="width:50%;" class="email_panel2">
+                   <apex:outputPanel >
+                      
+                            <div>
+                            <table id="example" class="display" >
+                            <thead>
+
+                <tr>
+    
+                    <th>Opportunity Name</th>
+                    <th>Type</th>
+                    <th>Account Type</th>
+                    <th>Business Type</th>
+                    <th>Selling Business</th>
+                    <th>Stage</th>
+                    <th>Lead Source</th>
+                    <apex:outputText rendered="{!IF(contains(emailTypeis,'Personal_Email__c'),true,false)}"> <th>Personal Email</th></apex:outputText>
+                    <apex:outputText rendered="{!IF(contains(emailTypeis,'Work_Email__c'),true,false)}"><th>Work Email</th></apex:outputText>
+    
+                </tr>
+    
+            </thead>
+            <tbody>
+            <apex:repeat value="{!selectedOpportunitieswrap}" var="s">
+            <tr>
+
+                <td>{!s.opportunity.Name}</td>
+                <td>{!s.opportunity.Type__c}</td>
+                <td>{!s.opportunity.Account_Type__c}</td>
+                <td>{!s.opportunity.Business_Type__c}</td>
+                <td>{!s.opportunity.Selling_Business__c}</td>
+                <td>{!s.opportunity.StageName}</td>
+                <td>{!s.opportunity.LeadSource}</td>
+                
+                 <apex:outputText rendered="{!IF(contains(emailTypeis,'Personal_Email__c'),true,false)}"><td>{!s.opportunity.Personal_Email__c}</td></apex:outputText>
+                 <apex:outputText rendered="{!IF(contains(emailTypeis,'Work_Email__c'),true,false)}"><td>{!s.opportunity.Work_Email__c}</td></apex:outputText>
+
+                
+            </tr>
+            </apex:repeat></tbody>
+                                </table>
+                            
+                   
+                             </div>
+                      </apex:OutputPanel>
+                  
+                  </td></tr>
+                  
+          </table>   </apex:outputPanel>     
+           <!---------------------------------------------------------------------------------------------------->        
+           </apex:form>
+          <script>
+          function checkEmailsend(){
+          console.log($('#file').value);
+           if ($('#file').value != null) {
+       
+                 sendmail();
+      }   
+      else {
+      var r = confirm("send email without attachment?");
+if (r == true) {
+     sendmail();
+
+} else {
+  //  txt = "You pressed Cancel!";
+}
+       //  alert('No File Attached');
+      }
+          
+          //sendmail();
+          }
+          
+          
+    $(document).ready(function() {
+    
+       // $('#example'String).DataTable();
+        
+         $('#example').DataTable();
+    
+    } );
+    
+              </script>
+          <style>
+          .detailList{
+              margin-left: 54%;
+          }
+          </style>
+          </apex:page>

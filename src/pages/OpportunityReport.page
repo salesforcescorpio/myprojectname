@@ -1,0 +1,16 @@
+<apex:page controller="ReportsController" >
+ <!-- <apex:iframe src="/00Oc0000000HXMu"/> -->
+  <!-- Account summary -->
+  
+  <apex:repeat value="{!ReportIds}" var="each">
+   <apex:outputPanel >
+           <a href="/{!each}">get report</a>
+          <analytics:reportChart reportId="{!each}" / >
+
+  </apex:outputPanel>
+  
+  </apex:repeat>
+ 
+  
+ 
+</apex:page>

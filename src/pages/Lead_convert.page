@@ -1,0 +1,197 @@
+<apex:page standardController="Lead" extensions="Lead_convertcon" action="{!onloadpage}" id="pg" lightningStylesheets="true">
+<apex:form >
+<apex:actionfunction action="{!doNoting}" name="donone" rerender="pagePnl"  >
+<apex:param name="selval" value=""/>
+</apex:actionfunction> 
+
+</apex:form>
+<apex:form id="frm1" rendered="{!!bothCreated}" >
+<!--<apex:actionfunction action="{!doNoting}" name="donone"   />-->
+<apex:pageBlock >
+<script>
+function sele(passedval){
+
+var selval = passedval;
+donone(selval); 
+
+}
+</script>
+<!-- <apex:outputText style="text-align:center">Create Account :<apex:inputCheckbox value="{!myCheckbox1}" onclick="donone()" styleClass="accBox"/>  </apex:outputText>
+ <apex:outputText style="text-align:center"> </apex:outputText> <br/>
+ <apex:outputText style="text-align:center">Create Opportunity  :<apex:inputCheckbox value="{!myCheckbox2}" onclick="donone()" styleClass="oppbox"/> </apex:outputText>
+ <apex:outputText style="text-align:center">  </apex:outputText>   -->   
+ <apex:selectRadio value="{!searchCategory}" onclick="sele(this.value)" >
+    <apex:selectOption itemValue="myCheckbox1" itemlabel="Account"/>
+    <apex:selectOption itemValue="myCheckbox2" itemlabel="Opportunity"/>
+    
+</apex:selectRadio>       
+                
+    <apex:pageMessages ></apex:pageMessages>
+
+</apex:pageBlock>
+
+<apex:outputPanel id="pagePnl" >
+
+<apex:outputPanel styleClass="sample" id="myDIV" rendered="{!myCheckbox1}">
+ <apex:pageBlock >
+            
+  <apex:pageBlockSection title="Lead to Account Conversion Details" columns="2"  >
+                  
+               
+                
+                <apex:outputText style="text-align:center"><h3 style="margin-left: 36%;">Lead Fields</h3></apex:outputText>
+                <apex:outputText style="text-align:center"><h3 style="margin-left: 36%;"> Account fields</h3></apex:outputText>
+                  
+                <apex:inputField value="{!leadrec.Class_Type__c }"/>
+                <apex:inputField value="{!acc.Class__c }"/>
+                                
+                <apex:inputField value="{!leadrec.FirstName}"/>
+                <apex:inputText value="{!acc.First_Name__c }"/>
+                
+                <apex:inputField value="{!leadrec.LastName}"/>
+                <apex:inputField value="{!acc.Last_Name__c }"/>
+                
+                 <apex:inputField value="{!leadrec.MiddleName}"/>
+                <apex:inputField value="{!acc.Middle_Name__c }"/>
+                
+                <apex:inputField value="{!acc.Name}"/>
+                <apex:inputField value="{!acc.Name}"/>
+                
+                <apex:inputField value="{!leadrec.MobilePhone}"/>
+                <apex:inputField value="{!acc.Personal_Number__c}"/>
+                
+                              
+                <apex:inputField value="{!leadrec.Email}"/>
+                <apex:inputField value="{!acc.Account_Personal_Email__c }"/>
+                
+                <apex:inputField value="{!leadrec.Type__c}"/>
+                <apex:inputField value="{!acc.Type__c}"/>
+                
+                <apex:inputField value="{!leadrec.Official_Email__c}"/>
+                <apex:inputField value="{!acc.Account_Official_Email__c}"/>
+                
+                <apex:inputField value="{!leadrec.Parent_Account__c}"/>
+                <apex:inputField value="{!acc.ParentId}"/>
+                
+                
+            </apex:pageBlockSection>
+   
+    </apex:pageblock>
+</apex:outputPanel>
+
+<apex:outputPanel styleClass="sample2" id="myDIV2" rendered="{!myCheckbox2}">
+    <apex:pageBlock >
+        
+      
+     
+  <apex:pageBlockSection title="Lead to Opportunity Conversion Details" columns="2"  >
+                  
+               
+                
+                <apex:outputText style="text-align:center"><h3 style="margin-left: 36%;">Lead Fields</h3></apex:outputText>
+                <apex:outputText style="text-align:center"><h3 style="margin-left: 36%;"> Opportunity fields</h3></apex:outputText>
+                  
+                <apex:inputField value="{!leadrec.Class_Type__c }"/>
+                <apex:inputField value="{!opp.Class_Type__c}"/>
+                                
+                <apex:inputField value="{!leadrec.FirstName}"/>
+                <apex:inputField value="{!opp.First_Name__c }"/>
+                
+                <apex:inputField value="{!leadrec.LastName}"/>
+                <apex:inputField value="{!opp.Last_Name__c }"/>
+                                                
+                <apex:inputField value="{!leadrec.name}"/>
+                <apex:inputField value="{!opp.Name}"/>
+                
+                <apex:inputField value="{!leadrec.MobilePhone}"/>
+                <apex:inputField value="{!opp.Personal_Phone__c}"/>
+                
+                              
+                <apex:inputField value="{!leadrec.Email}"/>
+                <apex:inputField value="{!opp.Personal_Email__c }"/>
+                
+                <apex:inputField value="{!leadrec.Type__c}"/>
+                <apex:inputText value="{!opp.Type__c}"/>
+                
+                <apex:inputField value="{!leadrec.Account_Plant_Type__c}"/>
+                <apex:inputText value="{!opp.Account_Type__c}"/>
+                
+                <apex:inputField value="{!leadrec.Parent_Account__c}"/>
+                <apex:inputField value="{!opp.AccountId}"/>
+                
+                <!--<apex:outputText />
+                <apex:inputField value="{!opp.StageName}" />
+                <apex:outputText />
+                <apex:inputField value="{!opp.closeDate}" />-->
+               
+            </apex:pageBlockSection>
+   
+    </apex:pageblock>
+</apex:outputPanel>
+
+</apex:outputPanel>
+<apex:commandButton value="Convert" action="{!Convertlead}"/>
+ <apex:commandButton onclick="goBack()" rerender="false" value="Back"  /> 
+  <script>
+function goBack() {
+    window.history.back();
+}
+</script>  
+<script>
+function callAction(){
+//alert(document.getElementsByClassName('sample')[0].style.display);
+if(document.getElementsByClassName('sample')[0].style.display == 'none'){
+
+document.getElementsByClassName('sample')[0].style.display='block';
+}
+else{
+document.getElementsByClassName('sample')[0].style.display='none';
+
+}
+    console.log(document.getElementsByClassName('sample'));
+
+}
+
+function callAction2(){
+//alert(document.getElementsByClassName('sample2')[0].style.display);
+if(document.getElementsByClassName('sample2')[0].style.display == 'none'){
+
+document.getElementsByClassName('sample2')[0].style.display='block';
+}
+else{
+document.getElementsByClassName('sample2')[0].style.display='none';
+
+}
+  //  console.log(document.getElementsByClassName('sample2'));
+
+}
+    console.log(document.getElementsByClassName('oppbox')[0].checked);
+if(document.getElementsByClassName('oppbox')[0].checked){
+document.getElementsByClassName('sample2')[0].style.display='block';
+
+
+}
+
+
+if(document.getElementsByClassName('accBox')[0].checked){
+document.getElementsByClassName('sample')[0].style.display='block';
+
+
+}
+</script>
+
+</apex:form>
+
+<apex:form rendered="{!bothCreated}">
+<apex:pageBlock >
+<apex:pageBlockSection >
+Both Records Created  <br/>
+<a href="/{!acc.id}">Account</a><br/>
+<a href="/{!opp.id}">Opportunity</a>
+</apex:pageBlockSection>
+</apex:pageBlock>
+
+
+</apex:form>
+ 
+</apex:page>

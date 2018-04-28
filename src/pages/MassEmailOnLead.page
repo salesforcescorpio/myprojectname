@@ -1,0 +1,258 @@
+<apex:page Controller="MassEmailingControllerOnLead">
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css"/>
+<script src="https://code.jquery.com/jquery-1.12.4.js"/>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"/>
+<style>
+.dataTables_filter {
+display: none; 
+}
+</style>
+
+            <script>
+                function checkAll(cb)
+                {
+                    var inputElem = document.getElementsByTagName("input");
+                    for(var i=0; i<inputElem.length; i++)
+                    {
+                        if(inputElem[i].id.indexOf("checkedone")!=-1)
+                        inputElem[i].checked = cb.checked;
+                    }
+                }
+               
+           </script>
+           
+           
+           <style>
+            body .bPageBlock .pbBody .red .pbSubheader{
+                background-color:#c00000;
+            }
+            body .bPageBlock .pbBody .grey .pbSubheader{
+                background-color:#c0c0c0;
+            }
+            body .bPageBlock .pbBody .grey .pbSubheader h3{
+                color:#000;
+                witdh="70%";
+            }
+        </style>
+            <apex:form id="formid">
+          
+            <apex:outputPanel rendered="{!!show_email}">
+          
+<table>
+<tr>
+    <td>
+         <c:multiselectcomponent leftLabel="Type" leftOption="{!AccountTypeValues}"  rightOption="{!AccountTypeValuesSelected }" size="3" width="130px" />
+     </td>
+     <td>
+         <c:multiselectcomponent leftLabel="Account Plan Type" leftOption="{!AccountPlanTypeValues}"  rightOption="{!AccountPlanTypeValuesSelected }" size="3" width="130px" />
+     </td>
+     <td>
+         <c:multiselectcomponent leftLabel="Lead Status" leftOption="{!Status}"  rightOption="{!StatusSelected}" size="3" width="130px" />
+      </td>
+      <td>
+         <c:multiselectcomponent leftLabel="Lead Source" leftOption="{!LeadSource}"  rightOption="{!LeadSourceSelected}" size="3" width="130px" />
+      </td>
+      </tr>
+      <tr>
+      <td>
+         <c:multiselectcomponent leftLabel="Rating" leftOption="{!Rating}"  rightOption="{!RatingSelected}" size="3" width="130px" />
+      </td>
+      <td>
+         <c:multiselectcomponent leftLabel="Lead Sub-Source" leftOption="{!LeadSubSource}"  rightOption="{!LeadSubSourceSelected}" size="3" width="320px" />
+      </td>
+</tr>
+</table> 
+
+           
+           <apex:commandButton action="{!fetchRecords}" value="Fetch Records"/>
+                   
+                    <apex:outputPanel style="color:#4AA02C;font-weight:bold">
+                    
+                    <apex:actionStatus id="actStatusId" startText="Loading...." stopText=""/>
+                    <apex:actionStatus id="processingStatus" startText="Saving...." stopText=""/>
+                  </apex:outputPanel>
+                  
+            </apex:outputPanel>        
+                    <apex:pageBlock rendered="{!!show_email}">
+                    <apex:outputPanel rendered="{!showerror }">
+                    
+                    <h3 style="text-align:left;color:red;">please select atleast one checkbox</h3>
+                    
+                    
+                    </apex:outputPanel>
+                    <apex:pageblock >
+                    <apex:pageBlockButtons rendered="{!IF(LeadListRecs.size!= null,True,False)}" location="top">
+                    
+                                        <apex:commandButton action="{!ProcessSelected}" value="Next" /> 
+                     </apex:pageBlockButtons>
+                    
+                    <table id="example" class="display" >
+                    
+                    <thead><tr>
+                    <th> 
+                                <apex:inputCheckbox onclick="checkAll(this)" id="chk">
+                                   
+                                    </apex:inputCheckbox>
+                                
+                                </th>
+                                <th>Lead Name</th>
+                                <th>Type</th>
+                                <th>Account Plan Type</th>
+                                <th>Lead Status</th>
+                                <th>Lead Source</th>
+                                <th>Lead Sub Source</th>
+                                <th>Rating</th>
+                                <th>Email</th>
+                                </tr>
+                    </thead>
+                            <tbody>
+                            
+                            <apex:repeat value="{!LeadListRecs}" var="c"    >
+                                <tr>
+                                <td>
+                                  <apex:inputCheckbox value="{!c.selected}" id="checkedone">
+                                </apex:inputCheckbox>
+                            </td>
+                                <td> {!c.lead.name }</td>
+                                <td>{!c.lead.Type__c}</td>
+                                <td>{!c.lead.Account_Plant_Type__c}</td>
+                                <td>{!c.lead.Status}</td>
+                                <td>{!c.lead.LeadSource}</td>
+                                <td>{!c.lead.Lead_sub_source__c}</td>
+                                <td>{!c.lead.Rating}</td>
+                                <td>{!c.lead.Email}</td>
+                             </tr>
+                                </apex:repeat> 
+                    
+                    
+                                </tbody>
+                    
+                    
+                    
+                    
+                    </table>
+                     </apex:pageblock>
+                    </apex:pageBlock>
+   <!---------------------------------------------------------------------------------------------->
+          <apex:outputPanel rendered="{!show_email}" >
+          <apex:actionFunction name="sendmail" action="{!sendEmail}"/>
+                         <apex:pageMessages id="showmsg"></apex:pageMessages>
+                      <apex:pageblock ><apex:pageBlockButtons location="top">
+                      <div class="btn"  value="send Email" onclick="checkEmailsend()">Send Email</div>
+                      <apex:commandButton action="{!GoBack}" value="Back"/>
+                      </apex:pageBlockButtons> </apex:pageblock>
+
+          <table width="100%" >
+              <tr>
+              
+              
+                  <td style="width:50%;" class="email_panel">
+                  <div class="email_panel" style="margin-left: -250%;">
+                  <apex:pageblock >
+                  <apex:pageBlockSection id="Selected_PBS" columns="1" >
+                        <apex:pageBlockSectionItem >
+                          <apex:outputLabel value="Email Subject" for="fileName"/>
+                          <apex:inputText style="width: 360px; height: 20px"  value="{!EmailSubject}" id="fileName"/>
+                          </apex:pageBlockSectionItem>
+                          <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >
+                          <apex:outputLabel value="Email Body" for="description"/>
+                          <apex:inputTextarea style="width: 360px; height: 200px" value="{!EmailBody}" id="description" />
+                          </apex:pageBlockSectionItem>
+                          <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >
+                          <apex:outputLabel value="File" for="file"/>
+                          <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"  contentType="{!contentType}" id="file"/>
+                         
+                           
+                          </apex:pageBlockSectionItem>
+                         
+                   </apex:pageBlockSection></apex:pageblock></div>
+
+                         
+
+                        
+                  </td>
+                  <td style="width:50%;" class="email_panel2">
+                   <apex:outputPanel >
+                      
+                            <div>
+                            <table id="example" class="display" >
+                            <thead>
+
+                <tr>
+    
+                                <th>Lead Name</th>
+                                <th>Type</th>
+                                <th>Account Plan Type</th>
+                                <th>Lead Status</th>
+                                <th>Lead Source</th>
+                                <th>Lead Sub Source</th>
+                                <th>Rating</th>
+                                <th>Email</th>
+    
+                </tr>
+    
+            </thead>
+            <tbody>
+            <apex:repeat value="{!selectedLeadWrap}" var="s">
+            <tr>
+
+                <td>{!s.lead.name }</td>
+                <td>{!s.lead.Type__c}</td>
+                <td>{!s.lead.Account_Plant_Type__c}</td>
+                <td>{!s.lead.Status}</td>
+                <td>{!s.lead.LeadSource}</td>
+                <td>{!s.lead.Lead_sub_source__c}</td>
+                <td>{!s.lead.Rating}</td>
+                <td>{!s.lead.Email}</td>
+              </tr>
+            </apex:repeat></tbody>
+                                </table>
+                            
+                   
+                             </div>
+                      </apex:OutputPanel>
+                  
+                  </td></tr>
+                  
+          </table>   </apex:outputPanel>     
+           <!---------------------------------------------------------------------------------------------------->        
+           </apex:form>
+          <script>
+          function checkEmailsend(){
+          console.log($('#file').value);
+           if ($('#file').value != null) {
+       
+                 sendmail();
+      }   
+      else {
+      var r = confirm("send email without attachment?");
+if (r == true) {
+     sendmail();
+
+} else {
+  //  txt = "You pressed Cancel!";
+}
+       //  alert('No File Attached');
+      }
+          
+          //sendmail();
+          }
+          
+          
+    $(document).ready(function() {
+    
+       // $('#example'String).DataTable();
+        
+         $('#example').DataTable();
+    
+    } );
+    
+              </script>
+          <style>
+          .detailList{
+              margin-left: 54%;
+          }
+          </style>
+          </apex:page>

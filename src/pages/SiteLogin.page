@@ -1,0 +1,81 @@
+<apex:page id="loginPage" showHeader="false" title="{!$Label.site.site_login}" standardStylesheets="false" controller="SiteLoginController" >
+ <!-- <apex:composition template="{!$Site.Template}">
+    <apex:define name="body">  
+      <center>
+        <apex:panelGrid bgcolor="white" columns="1"> 
+          <br/>
+          <br/>
+          <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="1" styleClass="topPanelContainer"> 
+            <br/>
+            <apex:outputPanel layout="block" styleClass="topPanel">
+              <apex:panelGrid width="758" cellpadding="0" cellspacing="0" bgcolor="white" columns="2"> 
+                <apex:panelGroup >
+                  <br/>
+                  <c:SiteLogin id="siteLogin"/>
+                  <br/>
+                </apex:panelGroup>
+              </apex:panelGrid> 
+             </apex:outputPanel>
+          <c:SitePoweredBy />
+          </apex:panelGrid> 
+       </apex:panelGrid>
+      </center>
+      <br/>
+    </apex:define>
+ </apex:composition>-->
+ 
+ 
+ 
+ <apex:slds />
+  <apex:form id="loginForm" forceSSL="true">
+    <div class="slds-grid">
+  <div class="slds-col"></div>
+  <div class="slds-col"></div>
+  <div class="slds-col slds-box">
+  
+    <apex:pageMessages id="error"/>
+   <div class="demo-only" style="">
+  <div class="slds-form slds-form_compound1">
+  <!--<img src="{!$Resource.baselogo}" style="max-width:20%"/>-->
+    <fieldset class="slds-form-element">
+      <legend class="slds-form-element__label slds-text-title_caps"></legend>
+      <div class="slds-form-element__group">
+        <div class="slds-form-element__row">
+          <div class="slds-form-element slds-size_2-of-2">
+            <label class="slds-form-element__label" for="username">UserName</label>
+              <apex:inputText id="username" value="{!username}" styleClass="slds-input"/>
+      
+          </div>
+          <div class="slds-form-element slds-size_2-of-2">
+            <label class="slds-form-element__label" for="password">Password</label>
+               <apex:inputSecret id="password" value="{!password}" styleClass="slds-input"/>
+        <apex:outputText value=""/>
+    
+          </div>
+        </div>
+      </div>
+     
+    </fieldset>
+    <br/>
+        <fieldset class="slds-form-element">
+ 
+            <apex:commandButton styleClass="slds-button slds-button_brand" action="{!login}" value="{!$Label.site.login_button}" id="loginButton"/>
+        <apex:outputText value=""/>
+        <apex:outputText value=""/>
+        <apex:outputText value=""/>
+        <apex:panelGroup id="theLinks">
+          <apex:outputLink value="{!$Page.ForgotPassword}"> {!$Label.site.forgot_your_password_q}</apex:outputLink>
+          <apex:outputText value=" | " rendered="{!$Site.RegistrationEnabled}" />
+          <apex:outputLink value="{!$Page.SiteRegister}" rendered="{!$Site.RegistrationEnabled}">{!$Label.site.new_user_q}</apex:outputLink>
+    
+   </apex:panelGroup>  
+       </fieldset>
+   
+  </div>
+</div>
+  </div>
+  <div class="slds-col"></div>
+  <div class="slds-col"></div>
+</div>  
+  </apex:form>
+</apex:page>

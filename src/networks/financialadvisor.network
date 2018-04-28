@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network xmlns="http://soap.sforce.com/2006/04/metadata">
+    <allowMembersToFlag>false</allowMembersToFlag>
+    <branding>
+        <loginFooterText>salesforce.com</loginFooterText>
+        <primaryColor>#1797C0</primaryColor>
+        <primaryComplementColor>#FFFFFF</primaryComplementColor>
+        <quaternaryColor>#B1BAC1</quaternaryColor>
+        <quaternaryComplementColor>#222222</quaternaryComplementColor>
+        <secondaryColor>#51606E</secondaryColor>
+        <tertiaryColor>#DDE4E9</tertiaryColor>
+        <tertiaryComplementColor>#222222</tertiaryComplementColor>
+        <zeronaryColor>#51606E</zeronaryColor>
+        <zeronaryComplementColor>#FFFFFF</zeronaryComplementColor>
+    </branding>
+    <changePasswordTemplate>unfiled$public/CommunityChangePasswordEmailTemplate</changePasswordTemplate>
+    <emailSenderAddress>info.arlingtonhall@gmail.com</emailSenderAddress>
+    <emailSenderName>financialadvisor</emailSenderName>
+    <enableGuestChatter>false</enableGuestChatter>
+    <enableInvitation>false</enableInvitation>
+    <enableKnowledgeable>false</enableKnowledgeable>
+    <enableNicknameDisplay>false</enableNicknameDisplay>
+    <enablePrivateMessages>false</enablePrivateMessages>
+    <enableReputation>false</enableReputation>
+    <enableSiteAsContainer>true</enableSiteAsContainer>
+    <forgotPasswordTemplate>unfiled$public/CommunityForgotPasswordEmailTemplate</forgotPasswordTemplate>
+    <navigationLinkSet>
+        <navigationMenuItem>
+            <label>My Accounts</label>
+            <position>1</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <type>MenuLabel</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>My Leads</label>
+            <position>2</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <type>MenuLabel</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>My Opportunities</label>
+            <position>3</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <type>MenuLabel</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>Support</label>
+            <position>4</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <target>Case</target>
+            <type>SalesforceObject</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>Analytics</label>
+            <position>5</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <target>/report/Report/Recent</target>
+            <type>InternalLink</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>Resources</label>
+            <position>6</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <target>/resources</target>
+            <type>InternalLink</type>
+        </navigationMenuItem>
+        <navigationMenuItem>
+            <label>Email Tracking</label>
+            <position>7</position>
+            <publiclyAvailable>false</publiclyAvailable>
+            <target>/emailtracking</target>
+            <type>InternalLink</type>
+        </navigationMenuItem>
+    </navigationLinkSet>
+    <networkMemberGroups>
+        <profile>Admin</profile>
+        <profile>Partner Community User</profile>
+        <profile>Partner Community clone</profile>
+    </networkMemberGroups>
+    <picassoSite>financialadvisor1</picassoSite>
+    <selfRegistration>false</selfRegistration>
+    <sendWelcomeEmail>false</sendWelcomeEmail>
+    <site>financialadvisor</site>
+    <status>Live</status>
+    <tabs>
+        <defaultTab>home</defaultTab>
+        <standardTab>Chatter</standardTab>
+    </tabs>
+    <urlPathPrefix>fa</urlPathPrefix>
+    <welcomeTemplate>unfiled$public/CommunityWelcomeEmailTemplate</welcomeTemplate>
+</Network>
