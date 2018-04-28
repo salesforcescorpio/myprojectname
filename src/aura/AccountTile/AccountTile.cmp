@@ -1,0 +1,49 @@
+<aura:component >
+	<aura:attribute name="acc" type="Account"/>
+	<aura:attribute name="index" type="Integer"/>
+    <aura:attribute name="checkboxValue" type="Boolean" default="false"/>
+    <aura:attribute name="acc_id" type="String" default="{!v.acc.Id}"/>
+     <aura:attribute name="isCommunity" type="Boolean" default="True"/>
+       <aura:attribute name="selected_records" type="list"/>
+    <aura:handler name="init" value="this" action="{!c.doinit}"/>
+ 
+    <aura:registerEvent name="navigateToSObject" type="force:navigateToSObject"/>
+    <aura:registerEvent name="selectSObject" type="ltng:selectSObject"/>
+    
+    <li aura:id="tile" class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-3" data-id="{#v.index}">
+  
+        <a  onclick="{!c.accSelected}" class="slds-app-launcher__tile slds-text-link--reset slds-truncate">
+         
+            <div class="slds-app-launcher__tile-figure">
+                <span class="slds-avatar slds-avatar_large">
+                  <!--  <aura:If IsTrue="{!acc.Image_Url__c !='/servlet/servlet.FileDownload?file='}">      </aura:If>-->
+                 <!--   <img src="{!'/fa'+v.acc.Image_Url__c}" alt="{#v.acc.First_Name__c}" />	-->
+                <aura:if isTrue="{!!v.isCommunity}">
+                    <img src="{!v.acc.Image_Url__c}" alt="{#v.acc.First_Name__c}" />	
+              </aura:if>
+             <aura:if isTrue="{!v.isCommunity}">
+             
+                          <img src="{!'/fa'+v.acc.Image_Url__c}" alt="{#v.acc.First_Name__c}" />	
+              </aura:if>
+                    
+                    </span>
+
+            </div>
+            <div class="slds-app-launcher__tile-body">
+                <span class="slds-text-link">{#v.acc.Last_Name__c} 
+                         	<ui:inputCheckbox aura:id="{!v.acc.id}" value="{!v.acc.selectable}" />
+
+                </span>
+               
+                <span>Type	:{#v.acc.Type__c} </span><br/>
+                <span>Plan	:{#v.acc.Account_Plan_Type__c}</span><br/>
+                <span>Class	:{#v.acc.Class__c}</span>
+                <!--<c:Rating rating="{#v.fund.Rating__c}"/>-->
+          
+            </div>
+          
+      </a>
+          
+	</li>
+    
+</aura:component>

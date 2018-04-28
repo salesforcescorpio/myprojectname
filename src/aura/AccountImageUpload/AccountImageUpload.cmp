@@ -1,0 +1,17 @@
+<aura:component controller="AccountFieldSchema" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:attribute name="myRecordId" type="String" description="Record to which the files should be attached" />
+    <aura:attribute name="recordId" type="String"/> 
+     <aura:attribute name="All_attachments" type="object[]"/>
+      <aura:attribute type="String" name="fileString"/>
+     <aura:attribute type="String" name="fileName"/>
+
+  <!--  <lightning:fileUpload label="Upload Account Image" 
+        name="fileUploader"
+        multiple="false" 
+        accept=".pdf, .png,.jpg,.gif"
+        recordId="{!v.recordId}" 
+        onuploadfinished="{!c.handleUploadFinished}" />-->
+    <p>Upload Account Image</p>
+         <input type="file" class="file slds-file-selector__button slds-button slds-button_neutral email_att" aura:id="myFile" onchange="{!c.upload_attachment}"/>
+ 
+</aura:component>

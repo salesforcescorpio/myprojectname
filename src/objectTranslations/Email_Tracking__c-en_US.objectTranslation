@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Email Tracking</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Email Trackings</value>
+    </caseValues>
+    <fields>
+        <label><!-- Attachment Link --></label>
+        <name>Attachment_Link__c</name>
+    </fields>
+    <fields>
+        <label><!-- Attachment --></label>
+        <name>Attachment__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email Attachment Content --></label>
+        <name>Email_Attachment_Content__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email_Body --></label>
+        <name>Email_Body__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email Message Type --></label>
+        <name>Email_Message_Type__c</name>
+        <picklistValues>
+            <masterLabel>Mass Email</masterLabel>
+            <translation><!-- Mass Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Single Email</masterLabel>
+            <translation><!-- Single Email --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Email Status --></label>
+        <name>Email_Status__c</name>
+        <picklistValues>
+            <masterLabel>Replied Email</masterLabel>
+            <translation><!-- Replied Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sent Email</masterLabel>
+            <translation><!-- Sent Email --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Email Subject --></label>
+        <name>Email_Subject__c</name>
+    </fields>
+    <fields>
+        <label><!-- Email Type --></label>
+        <name>Email_Type__c</name>
+        <picklistValues>
+            <masterLabel>--None--</masterLabel>
+            <translation><!-- - - None- -  --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Personal Email</masterLabel>
+            <translation><!-- Personal Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Work Email</masterLabel>
+            <translation><!-- Work Email --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Email Message Type --></label>
+        <name>Email_mess__c</name>
+        <picklistValues>
+            <masterLabel>Mass Email</masterLabel>
+            <translation><!-- Mass Email --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Single Email</masterLabel>
+            <translation><!-- Single Email --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Opportunity --></label>
+        <name>Opportunity__c</name>
+        <relationshipLabel><!-- Email Trackings --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- ReplyEmailContenetPdf --></label>
+        <name>ReplyEmailContenetPdf__c</name>
+    </fields>
+    <fields>
+        <label><!-- ReplyEmailContentPdfName --></label>
+        <name>ReplyEmailContentPdfName__c</name>
+    </fields>
+    <fields>
+        <label><!-- ReplyEmailContentPdf --></label>
+        <name>ReplyEmailContentPdf__c</name>
+    </fields>
+    <fields>
+        <label><!-- Lead --></label>
+        <name>lead__c</name>
+        <relationshipLabel><!-- Email Trackings --></relationshipLabel>
+    </fields>
+    <layouts>
+        <layout>Email Tracking Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

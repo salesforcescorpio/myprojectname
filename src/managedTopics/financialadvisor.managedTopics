@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ManagedTopics xmlns="http://soap.sforce.com/2006/04/metadata">
+    <managedTopic>
+        <fullName>financialadvisor.Featured:Calander View</fullName>
+        <managedTopicType>Featured</managedTopicType>
+        <name>Calander View</name>
+        <parentName></parentName>
+        <position>0</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>financialadvisor.Navigational:Application Performence</fullName>
+        <managedTopicType>Navigational</managedTopicType>
+        <name>Application Performence</name>
+        <parentName></parentName>
+        <position>3</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>financialadvisor.Navigational:Most Useful Feature</fullName>
+        <managedTopicType>Navigational</managedTopicType>
+        <name>Most Useful Feature</name>
+        <parentName></parentName>
+        <position>4</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>financialadvisor.Navigational:New Features</fullName>
+        <managedTopicType>Navigational</managedTopicType>
+        <name>New Features</name>
+        <parentName></parentName>
+        <position>0</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>financialadvisor.Navigational:Others</fullName>
+        <managedTopicType>Navigational</managedTopicType>
+        <name>Others</name>
+        <parentName></parentName>
+        <position>2</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>financialadvisor.Navigational:UI Improvement</fullName>
+        <managedTopicType>Navigational</managedTopicType>
+        <name>UI Improvement</name>
+        <parentName></parentName>
+        <position>1</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+    <managedTopic>
+        <fullName>financialadvisor.Navigational:Which Needs To Be There</fullName>
+        <managedTopicType>Navigational</managedTopicType>
+        <name>Which Needs To Be There</name>
+        <parentName></parentName>
+        <position>5</position>
+        <topicDescription> </topicDescription>
+    </managedTopic>
+</ManagedTopics>

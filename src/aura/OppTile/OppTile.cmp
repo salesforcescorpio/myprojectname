@@ -1,0 +1,48 @@
+<aura:component >
+	<aura:attribute name="opp" type="Opportunity"/>
+	<aura:attribute name="index" type="Integer"/>
+    <aura:attribute name="checkboxValue" type="Boolean" default="false"/>
+    <aura:attribute name="opp_id" type="String" default="{!v.opp.Id}"/>
+       <aura:attribute name="selected_records" type="list"/>
+     <aura:attribute name="isCommunity" type="Boolean" default="True"/>
+  <aura:handler name="init" value="this" action="{!c.doinit}"/>
+ 
+ 
+    <aura:registerEvent name="navigateToSObject" type="force:navigateToSObject"/>
+    <aura:registerEvent name="selectSObject" type="ltng:selectSObject"/>
+    
+    <li aura:id="tile" class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-3" data-id="{#v.index}">
+        <a  onclick="{!c.oppSelected}" class="slds-app-launcher__tile slds-text-link--reset slds-truncate">
+         
+            <div class="slds-app-launcher__tile-figure">
+                <span class="slds-avatar slds-avatar_large">
+                  <!--  <aura:If IsTrue="{!acc.Image_Url__c !='/servlet/servlet.FileDownload?file='}">      </aura:If>-->
+                <!--	 <img src="{!v.opp.Image_Url__c}" alt="{#v.opp.First_Name__c}" />-->
+             <aura:if isTrue="{!!v.isCommunity}">
+                    <img src="{!v.opp.Image_Url__c}" alt="{#v.opp.First_Name__c}" />	
+             </aura:if>
+             <aura:if isTrue="{!v.isCommunity}">
+             		<img src="{!'/fa'+v.opp.Image_Url__c}" alt="{#v.opp.First_Name__c}" />
+             </aura:if>
+               
+                    </span>
+
+            </div>
+            <div class="slds-app-launcher__tile-body">
+                <span class="slds-text-link">{#v.opp.Name} 
+                         	<ui:inputCheckbox aura:id="{!v.opp.id}" value="{!v.opp.selectable}" />
+
+                </span>
+               
+                <span>Account Type	:{#v.opp.Account_Type__c} </span><br/>
+                <span>Business Type	:{#v.opp.Business_Type__c}</span><br/>
+                <span>Class Type	:{#v.opp.Class_Type__c}</span>
+                <!--<c:Rating rating="{#v.fund.Rating__c}"/>-->
+          
+            </div>
+          
+      </a>
+          
+	</li>
+    
+</aura:component>

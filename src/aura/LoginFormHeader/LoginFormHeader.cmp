@@ -1,0 +1,4 @@
+<aura:component controller="LightningLoginFormController" implements="forceCommunity:availableForAllPageTypes">
+    <img src="{!$Resource.home01}"/>
+	
+</aura:component>

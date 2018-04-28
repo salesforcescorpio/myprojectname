@@ -1,0 +1,93 @@
+<aura:component >
+    <aura:attribute name="opportunities" type="opportunity[]"/>
+     <aura:attribute name="DisplayCheckbox" type="boolean" default="true"/>
+        <aura:attribute name="selected_records" type="list"/>
+    
+ <div style="margin:2%">   
+    <table class="slds-table slds-table_bordered slds-max-medium-table_stacked-horizontal">
+  <thead>
+    <tr class="slds-text-title_caps">
+          <aura:if isTrue="{!v.DisplayCheckbox}">
+     <th scope="col">
+        <div class="slds-truncate" title="Select">Select</div>
+      </th>
+        <th scope="col">
+        <div class="slds-truncate" title="Opportunity Name">Opportunity Name</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Type">Type</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Account  Type">Account Type</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Business Type">Business Type</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Selling Business">Selling Business</div>
+      </th>
+      <th scope="col">
+        <div class="slds-truncate" title="Stage">Stage</div>
+      </th>
+    
+      <th scope="col">
+        <div class="slds-truncate" title="Lead Source">Lead Source</div>
+      </th>
+        </aura:if>  
+        
+      <th scope="col">
+        <div class="slds-truncate" title="Personal Email">Personal Email</div>
+      </th>
+        
+        
+      <th scope="col">
+        <div class="slds-truncate" title="Work Email">Work Email</div>
+      </th>
+    	
+    </tr>
+  </thead>
+  <tbody>
+    <aura:iteration items="{!v.opportunities}" var="Opp" indexVar="index">
+    <tr>
+           <aura:if isTrue="{!v.DisplayCheckbox}">
+                <th scope="row" data-label="Selected">
+                               	<input type="checkbox" data-selected-Index="{!index}" onclick="{!c.oppSelected}"  data-selected-id="{!Opp.id}" checked="{!Opp.selectable}" />
+
+               </th>
+      <th scope="row" data-label="Opportunity Name">
+        <div class="slds-truncate" title="Opportunity Name"><a href="javascript:void(0);">{!Opp.Name}</a></div>
+      </th>
+      <td data-label="Type">
+        <div class="slds-truncate" title="Type">{!Opp.Type__c}</div>
+      </td>
+      <td data-label="Account  Type">
+        <div class="slds-truncate" title="Account  Type">{!Opp.Account_Type__c}</div>
+      </td>
+      <td data-label="Business Type">
+        <div class="slds-truncate" title="Business Type">{!Opp.Business_Type__c}</div>
+      </td>
+      <td data-label="Selling Business">
+        <div class="slds-truncate" title="Selling Business">{!Opp.Selling_Business__c}</div>
+      </td>
+      <td data-label="Stage">
+        <div class="slds-truncate" title="Stage">{!Opp.StageName}</div>
+      </td>
+        
+        <td data-label="Lead Source">
+        <div class="slds-truncate" title="Lead Source">{!Opp.LeadSource}</div>
+      </td>
+        </aura:if>
+        
+        <td data-label="Personal Email">
+        <div class="slds-truncate" title="Personal Email">{!Opp.Personal_Email__c}</div>
+      </td>
+        
+        <td data-label="Work Email">
+        <div class="slds-truncate" title="Work Email">{!Opp.Work_Email__c}</div>
+      </td>
+    </tr>
+    </aura:iteration>
+  </tbody>
+</table>
+   </div>
+</aura:component>
