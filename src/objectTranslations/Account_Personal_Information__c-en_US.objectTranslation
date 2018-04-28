@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Account Personal Information</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Account Personal Information</value>
+    </caseValues>
+    <fields>
+        <label><!-- Account Personal Information --></label>
+        <name>Account__c</name>
+        <relationshipLabel><!-- Account Personal Information --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Age --></label>
+        <name>Age__c</name>
+    </fields>
+    <fields>
+        <label><!-- Anniversary Date --></label>
+        <name>Anniversary_Date__c</name>
+    </fields>
+    <fields>
+        <label><!-- Client Since --></label>
+        <name>Client_Since__c</name>
+    </fields>
+    <fields>
+        <label><!-- Date of Birth --></label>
+        <name>Date_of_Birth__c</name>
+    </fields>
+    <fields>
+        <label><!-- Home Fax --></label>
+        <name>Home_Fax__c</name>
+    </fields>
+    <fields>
+        <label><!-- Last ADV Offering --></label>
+        <name>Last_ADV_Offering__c</name>
+    </fields>
+    <fields>
+        <label><!-- Marital Status --></label>
+        <name>Marital_Status__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Spouse Date of Birth --></label>
+        <name>Spouse_Date_of_Birth__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Firstname --></label>
+        <name>Spouse_Firstname__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Gender --></label>
+        <name>Spouse_Gender__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Spouse Job Title --></label>
+        <name>Spouse_Job_Title__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Last Name --></label>
+        <name>Spouse_Last_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Middle Name --></label>
+        <name>Spouse_Middle_Name__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Nickname --></label>
+        <name>Spouse_Nickname__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Source --></label>
+        <name>Spouse_Source__c</name>
+        <picklistValues>
+            <masterLabel>Referral</masterLabel>
+            <translation><!-- Referral --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Spouse Status --></label>
+        <name>Spouse_Status__c</name>
+    </fields>
+    <fields>
+        <label><!-- Spouse Suffix --></label>
+        <name>Spouse_Suffix__c</name>
+        <picklistValues>
+            <masterLabel>Mr</masterLabel>
+            <translation><!-- Mr --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Spouse TaxID --></label>
+        <name>Spouse_TaxID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tax ID --></label>
+        <name>Tax_ID__c</name>
+    </fields>
+    <fields>
+        <label><!-- Work Fax --></label>
+        <name>Work_Fax__c</name>
+    </fields>
+    <layouts>
+        <layout>Account Personal Information Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

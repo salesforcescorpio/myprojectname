@@ -1,0 +1,7 @@
+<aura:component controller="AccountFieldSchema" implements="force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <aura:attribute name="redirectTo" type="String" default="00B6A000003erxSUAQ"/>
+    <div >
+       <p>Please confirm your Account Deletion.</p>
+    <ui:button label="Ok" press="{!c.doInit}"/>
+   </div>    
+</aura:component>

@@ -1,0 +1,49 @@
+<aura:component controller="LeadtFieldSchema" implements="force:hasRecordId,force:lightningQuickAction" access="global" >
+	
+    <!-- Component markup -->
+<aura:attribute name="startDate" type="DateTime" />
+<aura:attribute name="endDate" type="DateTime" />
+<aura:attribute name="TypeOfEmail" type="String"/>
+    <aura:attribute name="Locationis" type="String"/>
+    <aura:attribute name="Descriptionis" type="String"/>
+<aura:attribute name="EmailIs" type="String" default=''/>
+
+    <aura:attribute name="CurrentAcc" type="Lead"/>
+
+    <aura:attribute name="Success_msg" type="boolean" default="false"/>
+     <aura:attribute name="isDisabled" type="Boolean" default="true"/>
+ 
+       <aura:handler name="init" value="this" action="{!c.doinit}"/>
+ <aura:if isTrue="{!v.Success_msg}">
+             <div style="text-align:center">
+             	 <lightning:icon iconName="action:approval" size="large" alternativeText="Indicates approval"/>     
+                 <br/>
+                 <span>
+                 <p>Emails Sent Successfully..</p>
+                 </span>
+			</div>
+          </aura:if>
+ <aura:if isTrue="{!!v.Success_msg}">
+    
+<ui:inputDateTime aura:id="stdate" label="Start Date Time" class="form-control"
+   value="{!v.startDate}" displayDatePicker="true" />
+<ui:inputDateTime aura:id="enddate" label="End Date Time" class="form-control"
+   value="{!v.endDate}" displayDatePicker="true" />
+     <ui:inputText label="location" value="{!v.Locationis}" required="true"/>
+     <ui:inputTextArea label="Description" value="{!v.Descriptionis}"/>
+       Email Type : 
+<ui:inputSelect aura:id="inputCmp" multiple="false"  value="{!v.TypeOfEmail}" change="{!c.EmailTypeChanged}">
+    <ui:inputSelectOption text="--None--" label="--None--" value="true"/>
+    <ui:inputSelectOption text="Personal Email" label="Personal Email"/>
+    <ui:inputSelectOption text="Official Email" label="Official Email"/>
+</ui:inputSelect>
+     <br/>
+     <aura:if isTrue="{!v.EmailIs!=''}">
+     Selected Email : {!v.EmailIs}
+     </aura:if>
+     <br/>    
+        <div style="float:right;padding:2%">   
+         	 <button disabled="{!v.isDisabled}" class="slds-button slds-button_brand" onclick="{!c.send_invite_fun}">Send Invite</button>
+          </div> 
+    </aura:if>
+</aura:component>

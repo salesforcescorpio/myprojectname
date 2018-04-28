@@ -1,0 +1,46 @@
+<aura:component >
+	<aura:attribute name="led" type="Lead"/>
+	<aura:attribute name="index" type="Integer"/>
+    <aura:attribute name="checkboxValue" type="Boolean" default="false"/>
+    <aura:attribute name="led_id" type="String" default="{!v.led.Id}"/>
+    <aura:attribute name="selected_records" type="list"/>
+    <aura:registerEvent name="navigateToSObject" type="force:navigateToSObject"/>
+    <aura:registerEvent name="selectSObject" type="ltng:selectSObject"/>
+      <aura:attribute name="isCommunity" type="Boolean" default="True"/>
+  <aura:handler name="init" value="this" action="{!c.doinit}"/>
+
+    <li aura:id="tile" class="slds-p-horizontal--small slds-size--1-of-1 slds-medium-size--1-of-3" data-id="{#v.index}">
+        <a  onclick="{!c.ledSelected}" class="slds-app-launcher__tile slds-text-link--reset slds-truncate">
+         
+            <div class="slds-app-launcher__tile-figure">
+                <span class="slds-avatar slds-avatar_large">
+                    <aura:if isTrue="{!!v.isCommunity}">
+                    <img src="{!v.led.Image_Url__c}" alt="{#v.led.First_Name__c}" />	
+             </aura:if>
+             <aura:if isTrue="{!v.isCommunity}">
+             		<img src="{!'/fa'+v.led.Image_Url__c}" alt="{#v.led.First_Name__c}" />
+             </aura:if>
+                  <!--  <aura:If IsTrue="{!acc.Image_Url__c !='/servlet/servlet.FileDownload?file='}">      </aura:If>-->
+                <!--	 <img src="{!v.led.Image_Url__c}" alt="{#v.acc.First_Name__c}" />	-->
+                    </span>
+
+            </div>
+            <div class="slds-app-launcher__tile-body">
+                <span class="slds-text-link"> 
+                    {#v.led.Name}
+                         	<ui:inputCheckbox aura:id="{!v.led.id}" value="{!v.led.selectable}" />
+
+                </span>
+               
+             <span>Type	:{#v.led.Type__c} </span><br/>
+                <span>Account Plan	:{#v.led.Account_Plant_Type__c}</span><br/>
+                <span>Class	:{#v.led.Class_Type__c}</span>
+                <!--<c:Rating rating="{#v.fund.Rating__c}"/>-->
+          
+            </div>
+          
+      </a>
+          
+	</li>
+    
+</aura:component>

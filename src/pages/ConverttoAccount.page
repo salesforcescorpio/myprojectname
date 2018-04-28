@@ -1,0 +1,67 @@
+<apex:page standardController="Opportunity" extensions="Opportunityconvertcon" lightningStylesheets="true" >
+<apex:form >
+<div class="slds-scope">
+<apex:pageBlock rendered="{!!opp.converted_To_Account__c}" >
+<apex:pageMessages ></apex:pageMessages>
+
+  
+    
+  <apex:pageBlockSection title="Opportunity to Account Conversion Details" columns="2">
+                  <apex:outputText style="text-align:center"><h3 style="margin-left: 36%;">Opportunity Fields</h3></apex:outputText>
+                  <apex:outputText style="text-align:center"><h3 style="margin-left: 36%;"> Account fields</h3></apex:outputText>
+                  
+                  <apex:inputField value="{!opp.name }"/>
+                <apex:inputField value="{!acc.name }"/>
+                
+                
+                
+                <apex:inputField value="{!opp.Personal_Email__c}"/>
+                <apex:inputField value="{!acc.Account_Personal_Email__c }"/>
+                
+                <apex:inputField value="{!opp.Personal_Phone__c}"/>
+                <apex:inputField value="{!acc.Personal_Number__c }"/>
+                
+                <apex:inputText value="{!opp.Type__c}"/>
+                <apex:inputText value="{!acc.Type__c}"/>
+                
+                <apex:inputText value="{!opp.Account_Type__c}"/>
+                <apex:outputText value="{!acc.Account_Plan_Type__c }"/>
+                
+                              
+                <apex:inputField value="{!opp.Work_Email__c}"/>
+                <apex:inputField value="{!acc.Account_Official_Email__c  }"/>
+                
+                <apex:inputField value="{!opp.Class_Type__c}"/>
+                <apex:inputField value="{!acc.Class__c}"/>
+                
+                <apex:inputField value="{!opp.First_Name__c}"/>
+                <apex:outputField value="{!acc.First_Name__c}"/>
+                
+                <apex:inputField value="{!opp.Last_Name__c}"/>
+                <apex:inputField value="{!acc.Last_Name__c}"/>
+                
+                <!--<apex:outputText ></apex:outputText>
+                <apex:inputField value="{!acc.ParentId}"/> -->
+                
+                <apex:inputField value="{!opp.AccountId}"/>
+                <apex:inputField value="{!acc.ParentId}"/>
+                
+            </apex:pageBlockSection>
+    
+     <apex:pageBlockButtons >                
+        <apex:commandButton value="Convert" action="{!onloadpage}"/>
+        <apex:commandButton onclick="goBack()" rerender="false" value="Back"  /> 
+    </apex:pageBlockButtons>
+</apex:pageBlock>
+<apex:pageBlock rendered="{!opp.converted_To_Account__c}" >
+<apex:pageMessages ></apex:pageMessages>
+
+</apex:pageBlock>    
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+</div>
+ </apex:form>
+</apex:page>

@@ -1,0 +1,538 @@
+<apex:page Controller="MassEmailingController"   sidebar="false" standardStylesheets="true" id="page_id">
+   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/dataTables.bootstrap.min.css"/>
+  
+  <script src="https://code.jquery.com/jquery-1.12.4.js"/>
+   <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"/>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"/>
+   
+   <style>
+      .dataTables_filter {
+     
+      }
+.loader {
+  border: 5px solid #000;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 20px;
+  height: 20px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+      </style>
+      
+              <script>
+              var selectedAll = false;
+                  function checkAll(cb)
+                  {
+                  
+                  console.log(cb.checked);
+                  selectedAll =  cb.checked;
+                      var inputElem = document.getElementsByTagName("input");
+                      for(var i=0; i<inputElem.length; i++)
+                      {
+                          if(inputElem[i].id.indexOf("checkedone")!=-1)
+                          inputElem[i].checked = cb.checked;
+                      }
+                  }
+                 
+             
+   </script>
+   <style>
+      body .bPageBlock .pbBody .red .pbSubheader{
+      background-color:#c00000;
+      }
+      body .bPageBlock .pbBody .grey .pbSubheader{
+      background-color:#c0c0c0;
+      }
+      body .bPageBlock .pbBody .grey .pbSubheader h3{
+      color:#000;
+      witdh="70%";
+      }
+   </style>
+   <apex:form id="formid">
+      <!--  <apex:selectList size="1" value="{!AccountType}" >
+         <apex:actionSupport event="onchange" action="{!ChangeManager}" reRender="results" status="actStatusId"/>
+         <b> Select Account Type:</b>&nbsp;&nbsp;<apex:selectOptions value="{!Items}"></apex:selectOptions>
+         </apex:selectList>--->
+      <apex:outputPanel rendered="{!!show_email}" id="panel1">
+      <div class="panel panel-default">
+         <!--  <b> Select Account Type:</b>&nbsp;&nbsp;<apex:inputField value="{!sample_acc.Type}"/> &nbsp;&nbsp;<apex:inputField value="{!sample_acc.Account_Plan_Type__c}"/>   &nbsp;&nbsp;<apex:inputField value="{!sample_acc.Class__c}"/>-->          
+         <!--  <apex:selectList id="chooseColor" value="{!typeOfEmail}"  size="1">
+            <apex:selectOption itemValue="Account_Official_Email__c" itemLabel="Official Email"/>
+            <apex:selectOption itemValue="Account_Other_Email__c" itemLabel="Other Email"/>
+            <apex:selectOption itemValue="Account_Personal_Email__c" itemLabel="Personal Email"/>
+            </apex:selectList>--->
+             <div class="panel-body">
+          <div class="row">
+                  <div class="col-lg-3">
+                  <c:multiselectcomponent leftLabel="Account Type" leftOption="{!AccountTypeValues}"  rightOption="{!AccountTypeValuesSelected }" size="3" width="170px" />
+               </div>
+               <div class="col-lg-3">
+                  <c:multiselectcomponent leftLabel="Account Plan Type" leftOption="{!AccountPlanTypeValues}"  rightOption="{!AccountPlanTypeValuesSelected }" size="3" width="130px" />
+               </div>
+               <div class="col-lg-3">
+                  <c:multiselectcomponent leftLabel="Account Class" leftOption="{!AccountClass}"  rightOption="{!AccountClassSelected }" size="3" width="130px" />
+               </div>
+               <div class="col-lg-3">
+                  <c:multiselectcomponent leftLabel="Client type" leftOption="{!AccountClient}"  rightOption="{!AccountClientSelected}" size="3" width="130px" />
+               </div>
+               <div class="col-lg-3">
+                  <c:multiselectcomponent leftLabel="Email type" leftOption="{!EmailType}"  rightOption="{!EmailTypeSelected}" size="3" width="130px" />
+               </div>
+               
+                        </div>
+                           </div>
+         <apex:commandButton action="{!fetchRecords}" value="Fetch Records" styleClass="btn btn-primary"/>
+         <apex:outputPanel style="color:#4AA02C;font-weight:bold" >
+            <apex:actionStatus id="actStatusId" startText="Loading...." stopText=""/>
+            <apex:actionStatus id="processingStatus" startText="Saving...." stopText=""/>
+            
+         </apex:outputPanel>
+         </div>
+      </apex:outputPanel>
+     
+      <div class="main_panel_error panel panel-default" style="display:{!IF((dataFetched =='true' && dataExist=='false'),'','none')}">
+            <div class="message errorM3" role="alert">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+            <tbody><tr valign="top">
+                <td>
+                    <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"/>
+                </td>
+                <td class="messageCell"><div  class="messageText"><span  style="color:#cc0000">
+                                <h4>Error:</h4></span>No records for above selection  Or No Data  available<br/></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+      </div>
+      <div class="main_panel" style="display:{!IF((dataFetched =='true' && dataExist=='true'),'','none')}">
+      <apex:pageBlock rendered="{!!show_email}">
+         <apex:outputPanel rendered="{!showerror }">
+                <div class="message errorM3" role="alert">
+        <table border="0" cellpadding="0" cellspacing="0" class="messageTable" style="padding:0px;margin:0px;">
+            <tbody><tr valign="top">
+                <td>
+                    <img alt="ERROR" class="msgIcon" src="/s.gif" title="ERROR"/>
+                </td>
+                <td class="messageCell"><div  class="messageText"><span  style="color:#cc0000">
+                                <h4>Error:</h4></span>please select atleast one checkbox<br/></div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+         </apex:outputPanel>
+      <!--   <apex:pageblock >-->
+              <div class="panel panel-default" >
+               
+     
+            <apex:pageBlockButtons rendered="{!IF(AccountListRecs.size!= null,True,False)}" location="top">
+            <div class="loader" style="display:none"></div>
+               <!--  <apex:commandButton action="{!ProcessSelected}" value="Next" /> -->
+               <apex:actionFunction action="{!test}" name="dummy"/>
+               <apex:actionFunction action="{!ProcessSelected}" name="go_next" oncomplete="dummy()"  reRender="page_id,panel1,panel_2">
+                  <apex:param name="sele_list" value=""/>
+                  <apex:param name="selectedAll" value=""/>
+               </apex:actionFunction>
+               <div class="btn-primary btn next" onclick="call_next()">Next</div>
+            </apex:pageBlockButtons>
+            <table id="example"  class="display table table-striped table-bordered" cellspacing="0"  style="display:{!IF(!show_email,'','none')}">
+               <thead>
+                  <tr>
+                     <th class="gbl_checkBox">
+                        <apex:inputCheckbox onclick="checkAll(this)" id="chk">
+                        </apex:inputCheckbox>
+                     </th>
+                     <th>Account Name</th>
+                     <th>Account Type</th>
+                     <th>Account Plan Type</th>
+                     <th>Account Class</th>
+                     <apex:outputText rendered="{!IF(AccountClientSelected.size>0,True,False)}">
+                     <th>Account Client</th>
+                      </apex:outputText>
+                     <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Personal_Email__c'),true,false)}">
+                        <th>Account Personal Email</th>
+                     </apex:outputText>
+                     <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Official_Email__c'),true,false)}">
+                        <th>Account official Email</th>
+                     </apex:outputText>
+                  </tr>
+               </thead>
+               <tbody>
+                  <apex:repeat value="{!AccountListRecs}" var="c"    >
+                     <tr>
+                        <td>
+                           <!--  <apex:inputCheckbox value="{!c.selected} each_box" id="checkedone">
+                              </apex:inputCheckbox>-->
+                           <input class='{!c.account.id} each_box'  type="checkbox" value="{!c.selected}" id="checkedone" onclick="selected_ech_box(this,'{!c.account.id}')"/>
+                        </td>
+                        <td>
+                           {!c.account.name }
+                        </td>
+                        <td>{!c.account.Type__c}</td>
+                        <td>{!c.Account.Account_Plan_Type__c}</td>
+                        <td>{!c.Account.Class__c}</td>
+                          <apex:outputText rendered="{!IF(AccountClientSelected.size>0,True,False)}">
+                   
+                        <td>{!c.Account.Client_Type__c}</td>
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Personal_Email__c'),true,false)}">
+                           <td>{!c.account.Account_Personal_Email__c}</td>
+                           <!-- rendered="{!IF(contains(emailTypeis,'Account_Personal_Email__c'),true,false)}"/>-->
+                        </apex:outputText>
+                        <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Official_Email__c'),true,false)}">
+                           <td>{!c.account.Account_Official_Email__c}</td>
+                        </apex:outputText>
+                     </tr>
+                  </apex:repeat>
+               </tbody>
+            </table>
+            </div>
+        <!-- </apex:pageblock>-->
+         <!-- <apex:pageBlockButtons rendered="{!IF(AccountListRecs.size!= null,True,False)}">
+            <apex:commandButton action="{!ProcessSelected}" value="Next" /> 
+            </apex:pageBlockButtons>
+            
+            
+            <apex:pageblocktable id="pgBlock"  value="{!AccountListRecs}" var="c"    >
+                            <apex:column >
+            <apex:facet name="header"> 
+            <apex:inputCheckbox onclick="checkAll(this)" id="chk">
+            
+            </apex:inputCheckbox>
+            </apex:facet>
+            <apex:inputCheckbox value="{!c.selected}" id="checkedone">
+            
+            </apex:inputCheckbox>
+            </apex:column>
+            <apex:column headerValue="Account Name" value="{!c.account.name }" />
+            <apex:column headerValue="Account Type" value="{!c.account.Type}" />
+            <apex:column headervalue="Account Plan Type" value="{!c.Account.Account_Plan_Type__c}" />
+            <apex:column headervalue="Account Class" value="{!c.Account.Class__c}" />
+            <apex:column headerValue="Account Personal Email" value="{!c.account.Account_Personal_Email__c}" rendered="{!IF(contains(emailTypeis,'Account_Personal_Email__c'),true,false)}"/>
+            <apex:column headerValue="Account official Email" value="{!c.account.Account_Official_Email__c}" rendered="{!IF(contains(emailTypeis,'Account_Official_Email__c'),true,false)}"/>
+            </apex:pageblocktable> -->
+      </apex:pageBlock>
+      </div>
+      <!--<apex:pageBlock id="results" rendered="{!show_email}">
+         <apex:pageBlockButtons >
+         <apex:actionFunction name="sendmail" action="{!sendEmail}"/>
+         <apex:pageMessages id="showmsg"></apex:pageMessages>
+         
+         <div class="btn"  value="send Email" onclick="checkEmailsend()">Send Email</div>
+         <apex:commandButton action="{!GoBack}" value="Back"/>
+         </apex:pageBlockButtons>
+                          <apex:outputPanel id="pageBpanel">
+         <apex:outputPanel id="pgmsg">
+            <apex:outputPanel rendered="{!if(allErrorMsg !='',true,false)}">
+                <apex:pageMessage severity="error" strength="3" summary="{!allErrorMsg}" escape="false"/>
+            </apex:outputPanel>
+         </apex:outputPanel> 
+         
+         
+         
+         </apex:outputPanel> 
+                               
+         <div class="email_panel" style="margin-left: -303%;">
+         
+         <apex:pageBlockSection id="Selected_PBS" columns="1" >
+         <apex:pageBlockSectionItem >
+          <apex:outputLabel value="Email Subject" for="fileName"/>
+          <apex:inputText style="width: 360px;height:30px"  value="{!EmailSubject}" id="fileName"/>
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >
+          <apex:outputLabel value="Email Body" for="description"/>
+          <apex:inputTextarea style="width: 360px; height: 200px" value="{!EmailBody}" id="description" />
+          </apex:pageBlockSectionItem>
+          <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >
+          <apex:outputLabel value="File" for="file"/>
+          <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"  contentType="{!contentType}" id="file"/>
+         
+           
+          </apex:pageBlockSectionItem>
+         
+         </apex:pageBlockSection>
+         
+         
+         </div> 
+         </apex:pageBlock> 
+         <apex:pageBlock > 
+         <apex:outputPanel styleClass="grey secondTable" rendered="{!show_email}">    
+         
+         <apex:pageBlockSection Title="Selected Accounts" collapsible="false"  >
+         <apex:outputPanel layout="block" style="overflow:auto;" >
+         
+            <div class="email_panel2" >
+         <apex:dataTable value="{!selectedAccountswrap}" var="s" columnswidth="50px,50px" cellpadding="4" border="1">
+            <apex:column headervalue="Account Name" value="{!s.Account.Name}" />
+            <apex:column headervalue="Account Type" value="{!s.Account.Type}" />
+            <apex:column headervalue="Account Plan Type" value="{!s.Account.Account_Plan_Type__c}" />
+            <apex:column headervalue="Account Class" value="{!s.Account.Class__c}" />
+            <apex:column headervalue="Account Client" value="{!s.Account.Client_Type__c}" />
+            
+            <apex:column headervalue="Account Email" value="{!s.Account.Account_Personal_Email__c}" />
+         </apex:dataTable>
+             </div>
+         </apex:OutputPanel>  
+         </apex:pageBlockSection>
+         
+         </apex:outputPanel>
+         
+         </apex:pageBlock> -->
+      <!---------------------------------------------------------------------------------------------->
+      <apex:outputPanel id="panel_2">
+       <div class="panel panel-default">
+       <div class="panel-body"> <!----sendmail_validation---->
+         <apex:outputPanel rendered="{!show_email}" >
+            <apex:actionFunction name="sendmail_validation" action="{!sendemail_validation}"/>
+            
+            <apex:actionFunction name="sendmail" action="{!sendEmail}"/>
+            <apex:pageMessages id="showmsg"></apex:pageMessages>
+            <apex:pageblock >
+               <apex:pageBlockButtons location="top">
+                  <div class="btn"  value="send Email" onclick="checkEmailsend()">Send Email</div>
+                  <apex:commandButton action="{!GoBack}" value="Back"/>
+               </apex:pageBlockButtons>
+            </apex:pageblock>
+            <table width="100%" >
+               <tr>
+                  <td style="width:50%;" class="email_panel">
+                     <div class="email_panel" style="">
+                     <!--   <apex:pageblock >-->
+                        <!--   <apex:pageBlockSection id="Selected_PBS" columns="1" >
+                              <apex:pageBlockSectionItem -->
+                               <div class="form-group">
+                                <!-- <apex:outputLabel value="Email Subject" for="fileName"/>-->
+                                  <label for="fileName">Email Subject</label>
+                                 <apex:inputText style="width: 360px; height: 20px"  value="{!EmailSubject}" id="fileName" styleClass="form-control"/>
+                                </div> 
+                            <!--  </apex:pageBlockSectionItem>-->
+                             <!-- <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >-->
+                              <div class="form-group">
+                              
+                                 <!--<apex:outputLabel value="Email Body" for="description"/>-->
+                                   <label for="description">Email Body</label>
+                                
+                                 <apex:inputTextarea style="width: 360px; height: 200px" value="{!EmailBody}" id="description" styleClass="form-control" />
+                            </div>   
+                             <!-- </apex:pageBlockSectionItem>-->
+                             <!-- <apex:pageBlockSectionItem dataStyle="width:10%" labelStyle="width:23%" >-->
+                              <div class="form-group">
+                              
+                                 <apex:outputLabel value="File" for="file"/>
+                                 <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"  contentType="{!contentType}" id="file"/>
+                                 
+                            </div>   
+                           <!--   </apex:pageBlockSectionItem>
+                           </apex:pageBlockSection>-->
+                      <!--  </apex:pageblock>-->
+                     </div>
+                     <!-- <apex:outputLabel value="Email Subject" for="fileName"/>
+                        <apex:inputText style="width: 360px; height: 20px"  value="{!EmailSubject}" id="fileName"/><br/>
+                        <apex:outputLabel value="Email Body" for="description"/>
+                        <apex:inputTextarea style="width: 360px; height: 200px" value="{!EmailBody}" id="description" /><br/>
+                        <apex:outputLabel value="File" for="file"/>
+                        <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"  contentType="{!contentType}" id="file"/>-->
+                  </td>
+                  <td style="width:50%;" class="email_panel2">
+                     <apex:outputPanel >
+                        <div>
+                           <table id="example_2" class="display table table-striped table-bordered" cellspacing="0">
+                              <thead>
+                                 <tr>
+                                    <th>Account Name</th>
+                                    <th>Account Type</th>
+                                    <th>Account Plan Type</th>
+                                    <th>Account Class</th>
+                                    <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Personal_Email__c'),true,false)}">
+                                       <th>Account Personal Email</th>
+                                    </apex:outputText>
+                                    <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Official_Email__c'),true,false)}">
+                                       <th>Account Official Email</th>
+                                    </apex:outputText>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <apex:repeat value="{!selectedAccountswrap}" var="s">
+                                    <tr>
+                                       <td>{!s.Account.Name}</td>
+                                       <td>{!s.Account.Type__c}</td>
+                                       <td>{!s.Account.Account_Plan_Type__c}</td>
+                                       <td>{!s.Account.Class__c}</td>
+                                       <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Personal_Email__c'),true,false)}">
+                                          <td>{!s.Account.Account_Personal_Email__c}</td>
+                                       </apex:outputText>
+                                       <apex:outputText rendered="{!IF(contains(emailTypeis,'Account_Official_Email__c'),true,false)}">
+                                          <td>{!s.Account.Account_Official_Email__c}</td>
+                                       </apex:outputText>
+                                    </tr>
+                                 </apex:repeat>
+                              </tbody>
+                           </table>
+                           <!--<apex:dataTable value="{!selectedAccountswrap}" var="s" columnswidth="50px,50px" cellpadding="4" border="1">
+                              <apex:column headervalue="Account Name" value="{!s.Account.Name}" />
+                              <apex:column headervalue="Account Type" value="{!s.Account.Type}" />
+                              <apex:column headervalue="Account Plan Type" value="{!s.Account.Account_Plan_Type__c}" />
+                              <apex:column headervalue="Account Class" value="{!s.Account.Class__c}" />
+                              <apex:column headervalue="Account Email" value="{!s.Account.Account_Personal_Email__c}" />
+                              </apex:dataTable>-->
+                        </div>
+                     </apex:OutputPanel>
+                  </td>
+               </tr>
+            </table>
+         </apex:outputPanel>
+         </div>
+         </div>
+      </apex:outputPanel>
+      <!---------------------------------------------------------------------------------------------------->
+
+        <!----attachment missing error----->
+        <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+       
+      </div>
+      <div class="modal-body">
+        <p>send email without attachment?</p>
+      </div>
+      <div class="modal-footer">
+        <div  class="btn btn-primary" data-dismiss="modal" onclick="sendmail()">Ok</div>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+        <!----end of attachment error--->
+   </apex:form>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script>
+   
+        if({!email_valiation} && '{!sendEmailis}'=='dontsend'){
+        
+            //alert('attachment Not exist');
+            jQuery('#myModal').modal('show');
+        }else if('{!sendEmailis}' == 'send'){
+            sendmail();
+        
+        }
+      function checkEmailsend(){
+      
+        sendmail_validation();
+      
+      
+    
+      }
+      
+      
+      $(document).ready(function() {
+      
+      
+      $('#example').DataTable({
+       "dom": '<"top"flp<"clear">>rt<"bottom"ip<"clear">>',
+       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+       "aoColumnDefs" : [{ "bSortable" : false, "aTargets" : [0] }],
+       "searching":false,
+        "language": {
+      "emptyTable": "No records for above selection  Or No Data  available",
+      },
+      "drawCallback": function( settings ) {
+      $('.gbl_checkBox').removeClass('sorting_asc');
+      //  alert( 'DataTables has redrawn the table' );
+      console.log($( 'input[id$=chk]')[0].checked);
+      if($( 'input[id$=chk]')[0].checked){
+    //  alert('yes');   
+            $('.each_box').each(function(){
+                console.log('i');
+                $(this).prop('checked','true');
+            });
+            
+            
+      }
+    }
+      });
+      
+      
+      
+        $('#example_2').DataTable({
+         
+        "scrollY": 300,
+         "paging":   false,
+        "ordering": false,
+        "columnDefs": [
+    { "searchable": false, "targets": [1,2,3,4,5] }
+  ],
+      });
+      
+     // alert('{!show_email}');
+      if('{!show_email}' == 'false'){
+      
+            var selected_ids_are = '{!seletec_ids}'.split(',');
+            
+            for(var i=0;i<selected_ids_are.length;i++){
+            console.log(i);
+                $('.'+selected_ids_are[i]).prop('checked','true');
+                     selected_rows_array.push(selected_ids_are[i]);
+   
+            }
+      }
+      //alert('{!seletec_ids}');
+      
+      });
+      
+      var selected_rows_array = [];
+      function selected_ech_box(selectedValue,selectedId){
+      console.log('selectedValue',$(selectedValue)[0].checked);
+      console.log('selectedId',selectedId);
+      if($(selectedValue)[0].checked){
+        selected_rows_array.push(selectedId);
+      }else{
+            selected_rows_array.splice(selectedId,1);
+      
+      }
+      
+      console.log(selected_rows_array);
+      }
+      
+      function call_next(){
+      
+      $('.loader').show();
+      $('.next').hide();
+      var sele_list = selected_rows_array.join();
+      
+      // alert(sele_list);
+      go_next(sele_list,selectedAll);
+      
+      }
+      
+          
+   </script>
+   <style>
+      .detailList{
+      margin-left: 54%;
+      }
+      .buttonCell{
+          padding-top: 10%;
+      }
+   </style>
+</apex:page>

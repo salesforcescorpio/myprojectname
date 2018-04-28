@@ -1,0 +1,195 @@
+<aura:component controller="OpportunityFieldSchema" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="Opportunities" type="opportunity[]"/>
+    <aura:attribute name="filterObject" type="Object" />
+    <aura:attribute name="pageSize" type="integer" default="100"/>
+    <aura:attribute name="page" type="integer"/>
+    <aura:attribute name="pages" type="integer"/>
+    <aura:attribute name="total" type="integer"/>
+    <aura:attribute name="show_loader" type="Boolean"  default="true"/>
+    <aura:attribute name="send_email" type="Boolean"  default="false"/>
+    <aura:attribute name="selected_records" type="list"/>
+    <aura:attribute name="selectedEmailTypes" type="String[]"/>
+    <aura:attribute name="SelectedOpportunities" type="Opportunity[]"/>
+    <aura:attribute name="view_stype" type="String" default="Grid"/>
+    	 <!--First Add jQuery and Select2 plugin library from static resource Using ltng:require tag-->  
+    <ltng:require styles="{! $Resource.select2 + '/select2-4.0.3/dist/css/select2.min.css'}" 
+      scripts="{!join(',', 
+        $Resource.jquery ,  
+        $Resource.select2 + '/select2-4.0.3/dist/js/select2.js')
+      }" afterScriptsLoaded="{!c.scriptsLoaded}"/>
+    
+  <!--init handler event call "doInit" function on component load and fetch picklist values-->
+    
+  <!--Declare Attributes--> 
+    <aura:attribute name="AccountOptsList" type="String[]"/>
+     <aura:attribute name="EmailTypeOptsList" type="String[]"/>
+    <aura:attribute name="BusinessTypeOptsList" type="String[]"/>
+    <aura:attribute name="LeadTypeOptsList" type="String[]"/>
+    <aura:attribute name="SellingBusinessOptsList" type="String[]"/>
+     <aura:attribute name="StageOptsList" type="String[]"/>
+     <aura:attribute name="TypeOptsList" type="String[]"/>
+   
+  
+    <aura:attribute name="objOpp" type="Opportunity" default="{sobjectType : 'Opportunity'}" />
+    
+<div class="slds-box">
+    
+           <div class="slds-grid">
+    
+          <div class="slds-col slds-size--3-of-12 slds-p-horizontal_medium">
+              <ui:button press="{!c.Search_records}" class="slds-button slds-button_brand">
+              	 <lightning:icon variant="inverse" iconName="utility:search" size="small" alternativeText="Search Accounts"/>
+              </ui:button>
+        </div>
+              <div class="slds-col slds-size--3-of-12 slds-p-horizontal_medium">
+               </div>
+               <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+               </div>
+          <div class="slds-col slds-size--4-of-12 slds-p-horizontal_medium">
+        
+               <div class="slds-form-element">
+    <label class="slds-checkbox_toggle slds-grid">
+      <span class="slds-form-element__label slds-m-bottom_none">Select View:</span>
+       <ui:inputCheckbox change="{!c.doSwitchView}" aura:id="view_type"/>
+      <span id="toggle-desc" class="slds-checkbox_faux_container" aria-live="assertive">
+        <span class="slds-checkbox_faux"></span> 
+        <span class="slds-checkbox_on">List</span>
+          <span class="slds-checkbox_off">Grid</span>
+      </span>
+        <div style="margin-left:2%">
+            <ui:button label="Send Emails" press="{!c.go_records}">
+              </ui:button> 
+     </div>
+             
+    </label>
+     
+              </div>
+        
+               </div>
+      </div>
+    <br/>
+    <div class="slds-grid">
+        
+        <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+			<div class="">  
+     <label for="Type">Type</label> <br/>
+     <select style="width:100%" id="Type" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.TypeOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>        
+        </div>
+
+  <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+        <div class="">  
+     <label for="AccType">Account Type</label> <br/>
+     <select style="width:100%" id="AccType" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.AccountOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>  
+     
+        </div>
+  <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+        <div class="">  
+     <label for="BussType">Business Type</label> <br/>
+     <select style="width:100%" id="BussType" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.BusinessTypeOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>  
+     
+        </div>
+		
+		
+		  <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+        <div class="">  
+     <label for="SellingBusiness">Selling Business</label> <br/>
+     <select style="width:100%" id="SellingBusiness" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.SellingBusinessOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>  
+     
+        </div>
+		
+		
+		 <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+        <div class="">  
+     <label for="Stage">Stage</label> <br/>
+     <select style="width:100%" id="Stage" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.StageOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>  
+     
+        </div>
+		
+		 <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+        <div class="">  
+     <label for="LeadSource">Lead Source</label> <br/>
+     <select style="width:100%" id="LeadSource" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.LeadTypeOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>  
+     
+        </div>      
+        
+</div>
+
+<div  class="slds-grid">
+	
+		 
+		
+		
+		
+		
+		 <div class="slds-col slds-size--2-of-12 slds-p-horizontal_medium">
+        <div class="">  
+     <label for="EmailType">Email Type</label> <br/>
+     <select style="width:100%" id="EmailType" class="select2Class" multiple="multiple">
+       <aura:iteration items="{!v.EmailTypeOptsList}" var="opts">
+           <option value="{!opts}"> {!opts} </option>
+       </aura:iteration>     
+     </select>
+   </div>  
+     
+        </div>
+
+</div>
+    
+ <aura:if isTrue="{!v.view_stype=='Grid'}">
+     <div>
+        </div>
+        <ul aura:id="list" class="slds-grid slds-grid--pull-padded slds-wrap"
+			onmousemove="{!c.onMouseMove}" onmouseleave="{!c.onMouseLeave}">
+            <aura:iteration items="{!v.Opportunities}" var="opp" indexVar="index">
+              <c:OppTile opp="{!opp}" index="{#index}" selected_records="{!v.selected_records}"/>
+            </aura:iteration>
+        </ul>
+        
+        <c:Paginator page="{!v.page}" pages="{!v.pages}" total="{!v.total}" label="Opportunities"
+                     previousPage="{!c.onPreviousPage}" nextPage="{!c.onNextPage}"/>
+        
+        <c:OppInfoPopup aura:id="popup"/>
+  </aura:if>   
+ <aura:if isTrue="{!v.view_stype!='Grid'}">
+     <c:Opportunity_Email_Table opportunities="{!v.Opportunities}" DisplayCheckbox="true" selected_records="{!v.selected_records}"/>
+    </aura:if>
+    </div>
+    
+   <aura:if isTrue="{!v.show_loader}">
+        <lightning:spinner aura:id="mySpinner" />
+   </aura:if>
+  <aura:if isTrue="{!v.send_email}"> 
+    <c:Opportunity_email_send show_popup="{!v.send_email}" Sel_opportunities="{!v.selected_records}"  TypeOfEmail="{!v.selectedEmailTypes}"/>
+   </aura:if> 
+</aura:component>

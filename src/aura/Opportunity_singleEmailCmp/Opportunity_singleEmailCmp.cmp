@@ -1,0 +1,73 @@
+<aura:component controller="OpportunityFieldSchema" implements="flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickAction" access="global" >
+	 <aura:attribute name="Subject" type="String"/>
+     <aura:attribute name="email_body" type="String"/>
+    <aura:attribute name="show_popup" type="Boolean"/>	 
+    <aura:attribute name="CurrentOpp" type="Opportunity"/>
+      <aura:attribute name="Sel_opportunities" type="String[]"/>
+    <aura:attribute name="TypeOfEmail" type="String"/>
+    <aura:handler name="init" value="this" action="{!c.doinit}"/>
+    <aura:attribute name="Success_msg" type="boolean" default="false"/>
+      <aura:attribute name="tab_selected" type="String" default="TabA"/>
+    <aura:attribute name="All_attachments" type="object[]"/>
+      <aura:attribute type="String" name="fileString"/>
+     <aura:attribute type="String" name="fileName"/>
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="isDisabled" type="Boolean" default="true"/>
+  <aura:attribute name="Max_attachmentsAdded" type="boolean" default="false"/>    
+    <div class="demo-only" style="height:auto;">
+        
+    
+      	
+         <div class="slds-tabs_default">
+           <aura:if isTrue="{!v.Success_msg}">
+             <div style="text-align:center">
+             	 <lightning:icon iconName="action:approval" size="large" alternativeText="Indicates approval"/>     
+                 <br/>
+                 <span>
+                 <p>Emails Sent Successfully..</p>
+                 </span>
+			</div>
+          </aura:if>    
+      <aura:if isTrue="{!!v.Success_msg}">        
+  
+  <div >
+	<!-- Email Content-->
+      Email Type : 
+<ui:inputSelect aura:id="inputCmp" multiple="false"  value="{!v.TypeOfEmail}" change="{!c.EmailTypeChanged}">
+    <ui:inputSelectOption text="--None--" label="--None--" value="true"/>
+    <ui:inputSelectOption text="Personal Email" label="Personal Email"/>
+    <ui:inputSelectOption text="Work Email" label="Work Email"/>
+</ui:inputSelect>
+  	   <ui:inputText label="Subject" value="{!v.Subject}" required="true"/>
+		<ui:inputTextArea aura:id="email_body" label="Body" value="{!v.email_body}" rows="5"/>
+  <aura:if isTrue="{!!v.Max_attachmentsAdded}">
+      <input type="file" class="file slds-file-selector__button slds-button slds-button_neutral email_att" aura:id="myFile" onchange="{!c.upload_attachment}"/>
+    </aura:if> 
+      <aura:if isTrue="{!v.Max_attachmentsAdded}">
+      Maximum No.Of Attachments added please remove to add new attachment
+      </aura:if>
+      <div>
+       <aura:iteration items="{!v.All_attachments}" var="Att" indexVar="index">
+           <span class="slds-pill slds-pill_link">
+  <a href="javascript:void(0);" class="slds-pill__action" title="Full pill label verbiage mirrored here">
+    <span class="slds-pill__label"> {!Att.FileName}</span>
+  </a>
+  <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove" title="Remove" id="{!index+1}" onclick="{!c.removeAttahment}">
+   X
+  </button>
+</span>
+
+         </aura:iteration>
+      </div>
+  </div>
+          </aura:if>  
+</div> 
+          <aura:if isTrue="{!!v.Success_msg}"> 
+           <div style="float:right">   
+         	 <button disabled="{!v.isDisabled}" class="slds-button slds-button_brand" onclick="{!c.send_email}">Send</button>
+          </div> 
+              </aura:if>   
+          
+      </div>
+      
+</aura:component>
